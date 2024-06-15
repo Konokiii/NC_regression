@@ -408,6 +408,9 @@ class Actor(nn.Module):
                 module_list.append(nn.Tanh())
             elif layer == 'G':
                 module_list.append(nn.GELU())
+            elif layer == 'BR':
+                module_list.append(nn.BatchNorm1d(in_dim))
+                module_list.append(nn.ReLU())
             else:
                 out_dim = int(layer)
                 module_list.append(nn.Linear(in_dim, out_dim))
@@ -738,6 +741,12 @@ def run_BC(config: TrainConfig):
             )
         }
     )
+
+    # Save model
+    save_folder = f'/NC_regression/models/{config.env}'
+    os.makedirs(save_folder, exist_ok=True)
+    save_path = os.path.join(save_folder, config.name + '.pth')
+    torch.save(actor, save_path)
 
     # c_to_plot = np.linspace(0.000001, min_eigval, num=1000)
     # lamH_to_plot = np.linspace(0.0001, 0.1, num=1000)
