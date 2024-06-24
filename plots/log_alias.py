@@ -25,3 +25,15 @@ carla1d_final = 'carla1d_new'
 
 age = 'age'
 age_final = 'age_new'
+
+reacher_wwt_null = 'Ereacher_Mnull_DS5000_wd0.0015_Eps500000'
+reacher_wwt_bn = 'Ereacher_Mbn_DS5000_wd0.0015_Eps500000'
+reacher_wwt_big = 'Ereacher_Mbig_DS5000_wd0.0015_Eps500000'
+
+swimmer_wwt_null = 'Eswimmer_Mnull_DS100000_wd0.01_Eps20000'
+swimmer_wwt_bn = 'Eswimmer_Mbn_DS100000_wd0.01_Eps20000'
+swimmer_wwt_big = 'Eswimmer_Mbig_DS100000_wd0.01_Eps20000'
+
+hopper_wwt_null = 'Ehopper_Mnull_DS100000_wd0.00095_Eps20000'
+hopper_wwt_bn = 'Ehopper_Mbn_DS100000_wd0.00095_Eps20000'
+hopper_wwt_big = 'Ehopper_Mbig_DS100000_wd0.00095_Eps20000'

@@ -22,55 +22,55 @@ def main():
         {'env': 'reacher',
          'data_size': 5000,
          'arch': '256-R-256-R-256-R|T',
-         'max_epochs': int(1e6),
+         'max_epochs': int(5e5),
          'lamW': 1.5e-3},
         {'env': 'reacher',
          'data_size': 5000,
          'arch': '256-R-256-R-256-R-256-R-256-R|T',
          'mode': 'big',
-         'max_epochs': int(1e6),
+         'max_epochs': int(5e5),
          'lamW': 1.5e-3},
         {'env': 'reacher',
          'data_size': 5000,
          'arch': '256-BR-256-BR-256-BR|T',
          'mode': 'bn',
-         'max_epochs': int(1e6),
+         'max_epochs': int(5e5),
          'lamW': 1.5e-3},
 
         {'env': 'swimmer',
          'data_size': 100000,
          'arch': '256-R-256-R-256-R|T',
-         'max_epochs': int(1e6),
+         'max_epochs': int(2e4),
          'lamW': 1e-2},
         {'env': 'swimmer',
          'data_size': 100000,
          'arch': '256-R-256-R-256-R-256-R-256-R|T',
          'mode': 'big',
-         'max_epochs': int(1e6),
+         'max_epochs': int(2e4),
          'lamW': 1e-2},
         {'env': 'swimmer',
          'data_size': 100000,
          'arch': '256-BR-256-BR-256-BR|T',
          'mode': 'bn',
-         'max_epochs': int(1e6),
+         'max_epochs': int(2e4),
          'lamW': 1e-2},
 
         {'env': 'hopper',
          'data_size': 100000,
          'arch': '256-R-256-R-256-R|T',
-         'max_epochs': int(1e6),
+         'max_epochs': int(2e4),
          'lamW': 9.5e-4},
         {'env': 'hopper',
          'data_size': 100000,
          'arch': '256-R-256-R-256-R-256-R-256-R|T',
          'mode': 'big',
-         'max_epochs': int(1e6),
+         'max_epochs': int(2e4),
          'lamW': 9.5e-4},
         {'env': 'hopper',
          'data_size': 100000,
          'arch': '256-BR-256-BR-256-BR|T',
          'mode': 'bn',
-         'max_epochs': int(1e6),
+         'max_epochs': int(2e4),
          'lamW': 9.5e-4},
     ]
 
@@ -82,7 +82,7 @@ def main():
     config.lamH = -1
     config.lr = 1e-2
 
-    config.eval_freq = 100
+    config.eval_freq = 10
 
     config.data_folder = '/NC_regression/dataset/mujoco'
     config.project = 'NC_explore'

@@ -16,13 +16,13 @@ FIGURE_SAVE_PATH = './figures'
 
 
 def load_wwt(env):
-    file_path = os.path.join(DATA_FOLDER, env)
+    file_path = os.path.join(DATA_FOLDER, env + '.pkl')
     with open(file_path, 'rb') as f:
         data = pickle.load(f)
         return data['min_eigval'], data['Sigma_sqrt'], data['WWT']
 
 
-def compute_all_gamma_and_nrc3(min_eigval, Sigma_sqrt, WWT, num_to_search=5000):
+def compute_all_gamma_and_nrc3(min_eigval, Sigma_sqrt, WWT, num_to_search=1000):
     feasible_gamma = np.linspace(0, min_eigval, num=num_to_search).reshape(-1, 1)
     dim = Sigma_sqrt.shape[0]
     Sigma_sqrt = Sigma_sqrt.flatten()
@@ -55,14 +55,14 @@ def compute_nrc3_wrt_gamma(min_eigval, Sigma_sqrt, WWT, gamma):
     return all_NRC3
 
 
-def plot_gamma_over_epoch(ax, variant, cutoff=None):
+def plot_gamma_over_epoch(ax, variant, eval_freq=10, cutoff=None):
     min_eigval, Sigma_sqrt, WWT = load_wwt(variant)
     all_gamma, _ = compute_all_gamma_and_nrc3(min_eigval, Sigma_sqrt, WWT)
 
     cutoff = cutoff or 1.0
     cutoff = int(all_gamma.shape[0] * cutoff)
 
-    x_to_plot = np.arange(all_gamma.shape[0]) * 100
+    x_to_plot = np.arange(all_gamma.shape[0]) * eval_freq
     y_to_plot1 = all_gamma
     y_to_plot2 = [min_eigval] * x_to_plot.shape[0]
 
@@ -70,7 +70,7 @@ def plot_gamma_over_epoch(ax, variant, cutoff=None):
     sns.lineplot(ax=ax, x=x_to_plot[:cutoff], y=y_to_plot2[:cutoff], color=DEFAULT_COLORS[1], linestyle='dashed')
 
 
-def compare_nrc3(ax, variant, cutoff=None):
+def compare_nrc3(ax, variant, eval_freq=10, cutoff=None):
     min_eigval, Sigma_sqrt, WWT = load_wwt(variant)
     all_gamma, current_nrc3 = compute_all_gamma_and_nrc3(min_eigval, Sigma_sqrt, WWT)
     previous_nrc3 = compute_nrc3_wrt_gamma(min_eigval, Sigma_sqrt, WWT, all_gamma[-1])
@@ -78,7 +78,7 @@ def compare_nrc3(ax, variant, cutoff=None):
     cutoff = cutoff or 1.0
     cutoff = int(all_gamma.shape[0] * cutoff)
 
-    x_to_plot = np.arange(all_gamma.shape[0]) * 100
+    x_to_plot = np.arange(all_gamma.shape[0]) * eval_freq
     y_to_plot1 = current_nrc3
     y_to_plot2 = previous_nrc3
 
@@ -88,13 +88,33 @@ def compare_nrc3(ax, variant, cutoff=None):
                  linestyle=DEFAULT_LINESTYLES[1])
 
 
-def plot_nrc3_wrt_gamma():
-    pass
+def compare_variants(ax, variant_list, measure, eval_freq=10, cutoff=None):
+    cutoff = cutoff or 1.0
+    for k, variant in enumerate(variant_list):
+        variant_data, label = variant
+        min_eigval, Sigma_sqrt, WWT = load_wwt(variant_data)
+        all_gamma, _ = compute_all_gamma_and_nrc3(min_eigval, Sigma_sqrt, WWT)
+        nrc3 = compute_nrc3_wrt_gamma(min_eigval, Sigma_sqrt, WWT, all_gamma[-1])
+
+        to_use = int(all_gamma.shape[0] * cutoff)
+
+        x_to_plot = np.arange(all_gamma.shape[0]) * eval_freq
+        if measure == 'NRC3':
+            y_to_plot = nrc3
+        elif measure == 'gamma':
+            y_to_plot = all_gamma
+        else:
+            raise NotImplementedError
+
+        sns.lineplot(ax=ax, x=x_to_plot[:to_use], y=y_to_plot[:to_use], label=label, color=DEFAULT_COLORS[k],
+                     linestyle=DEFAULT_LINESTYLES[k])
 
 
 if __name__ == '__main__':
     envs = ['reacher', 'swimmer', 'hopper']
-    variants = [reacher_wwt, swimmer_wwt, hopper_wwt]
+    variant_group = [[(reacher_wwt_null, 'Base'), (reacher_wwt_big, 'Large'), (reacher_wwt_bn, 'BN')],
+                     [(swimmer_wwt_null, 'Base'), (swimmer_wwt_big, 'Large'), (swimmer_wwt_bn, 'BN')],
+                     [(hopper_wwt_null, 'Base'), (hopper_wwt_big, 'Large'), (hopper_wwt_bn, 'BN')]]
     measures = ['gamma', 'NRC3']
 
     num_rows = len(measures)
@@ -110,16 +130,45 @@ if __name__ == '__main__':
                 ax.set_ylabel(measure, fontweight='bold')
             if i == num_rows - 1:
                 ax.set_xlabel('Epoch')
-            ax.set_yscale('log')
+            # ax.set_yscale('log')
             ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
 
-            if measure == 'gamma':
-                plot_gamma_over_epoch(ax, variants[j], cutoff=0.15 if env == 'swimmer' else None)
-            elif measure == 'NRC3':
-                compare_nrc3(ax, variants[j], cutoff=0.15 if env == 'swimmer' else None)
+            compare_variants(ax, variant_group[j], measure, eval_freq=10,
+                             cutoff={'reacher': 0.1, 'swimmer': 0.02, 'hopper': None}[env])
+            ax.legend(fontsize=7)
 
     plt.tight_layout()
     plt.tight_layout()
     plt.show()
     plt.close()
+
+    # envs = ['reacher', 'swimmer', 'hopper']
+    # variants = [reacher_wwt, swimmer_wwt, hopper_wwt]
+    # measures = ['gamma', 'NRC3']
+    #
+    # num_rows = len(measures)
+    # num_columns = len(envs)
+    # fig, axes = plt.subplots(num_rows, num_columns)
+    #
+    # for i, measure in enumerate(measures):
+    #     for j, env in enumerate(envs):
+    #         ax = axes[i][j] if num_rows > 1 else axes[j]
+    #         if i == 0:
+    #             ax.set_title(env.capitalize(), fontweight='bold')
+    #         if j == 0:
+    #             ax.set_ylabel(measure, fontweight='bold')
+    #         if i == num_rows - 1:
+    #             ax.set_xlabel('Epoch')
+    #         # ax.set_yscale('log')
+    #         ax.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
+    #
+    #         if measure == 'gamma':
+    #             plot_gamma_over_epoch(ax, variants[j], cutoff=0.15 if env == 'swimmer' else None)
+    #         elif measure == 'NRC3':
+    #             compare_nrc3(ax, variants[j], cutoff=0.15 if env == 'swimmer' else None)
+    #
+    # plt.tight_layout()
+    # plt.tight_layout()
+    # plt.show()
+    # plt.close()
 
