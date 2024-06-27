@@ -23,15 +23,15 @@ def main():
         'env', 'E', ['hopper'],
         'mode', 'M', ['bn'],
 
-        'max_epochs', '', [int(2e4)],
+        'max_epochs', '', [int(5e4)],
         'batch_size', '', [256],
-        'data_size', 'DS', [int(1e5)],
+        'data_size', 'DS', [int(5e4)],
         'arch', '', ['256-BR-256-BR-256-BR|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
         'lamH', '', [-1],
-        'lamW', 'W', [5e-2, 3e-2, 1e-2, 9e-3, 7e-3, 5e-3, 3e-3, 1e-3, 9e-4, 7e-4],
+        'lamW', 'W', [1e-1, 9e-2, 7e-2, 5e-2, 3e-2, 1e-2, 9e-3, 7e-3, 5e-3, 3e-3, 1e-3, 1e-4, 1e-5, 1e-6, 0],
         'lr', 'lr', [1e-2],
 
         'eval_freq', '', [10],
