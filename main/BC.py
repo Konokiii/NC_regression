@@ -96,6 +96,11 @@ def compute_metrics(metrics, split, device):
 
     y_dim = y.shape[1]
 
+    # R^2
+    SS_res = torch.sum((y-yhat)**2).item()
+    SS_tot = torch.sum((y-y.mean(dim=0))**2).item()
+    result['R_sq'] = 1 - SS_res/SS_tot
+
     # WWT
     WWT = W @ W.T
     if y_dim == 2:
@@ -116,38 +121,26 @@ def compute_metrics(metrics, split, device):
     result['WWT_norm'] = torch.norm(WWT).item()
     del WWT
 
-    # NRC1
+    # NRC1 & explained variance ratio
     H_np = H.cpu().numpy()
-    pca_for_H = PCA(n_components=y_dim)
+    n_components = max(y_dim, 5)
+    pca_for_H = PCA(n_components=n_components)
     try:
         pca_for_H.fit(H_np)
     except Exception as e:
         print(e)
-        result['NRC1'] = -0.5
+        for k in range(n_components):
+            result[f'NRC1_pca{k+1}'] = -1
     else:
-        H_pca = pca_for_H.components_[:y_dim, :]  # First two principal components
-
-        try:
-            inverse_mat = np.linalg.inv(H_pca @ H_pca.T)
-        except Exception as e:
-            print(e)
-            result['NRC1'] = -1
-        else:
-            P = H_pca.T @ inverse_mat @ H_pca
-            del pca_for_H
-            del inverse_mat
-            H_proj_PCA = H_np @ P
-            result['NRC1'] = (np.linalg.norm(H_np - H_proj_PCA)**2 / B).item()
-            del H_np
-            del H_proj_PCA
-
-        # NRC1 with Gram-Schmidt
-        H_pca = torch.tensor(H_pca, device=device)
+        H_pca = torch.tensor(pca_for_H.components_[:n_components, :], device=device)
         H_U = gram_schmidt(H_pca)
-        H_P = torch.mm(H_U.T, H_U)
-        H_proj_PCA = torch.mm(H, H_P)
-        result['NRC1_GS'] = F.mse_loss(H_proj_PCA, H).item()
-        del H_pca, H_U, H_P, H_proj_PCA
+        for k in range(n_components):
+            result[f'EVR{k+1}'] = pca_for_H.explained_variance_ratio_[k]
+
+            H_P = torch.mm(H_U[:k+1, :].T, H_U[:k+1, :])
+            H_proj_PCA = torch.mm(H, H_P)
+            result[f'NRC1_pca{k+1}'] = F.mse_loss(H_proj_PCA, H).item()
+    del H_pca, H_U, H_P, H_proj_PCA, pca_for_H, H_np
 
     # NRC2 with Gram-Schmidt
     U = gram_schmidt(W)
@@ -244,8 +237,14 @@ class MujocoBuffer(Dataset):
             with open(file_path, 'rb') as file:
                 dataset = pickle.load(file)
                 if split == 'test':
+                    # if env in ['swimmer', 'hopper'] and data_size < 5000:
+                    #     data_size = 1000
+                    # elif env == 'reacher' and data_size < 250:
+                    #     data_size = 50
+                    # else:
+                    #     data_size //= 5
                     data_size //= 5
-                # self.size = data_size * 1000 if env == 'swimmer' else data_size * 50
+
                 self.size = data_size
                 self.states = dataset['observations'][:self.size, :]
                 self.actions = dataset['actions'][:self.size, :]

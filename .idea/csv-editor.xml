@@ -17,7 +17,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/results/carla2d/carla2d/Carla2D_gamma.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/results/carla2d/carla2d_new/Carla2D_100ep.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/results/carla2d/carla2d_new/Carla2D_gamma.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -53,6 +67,13 @@
           </value>
         </entry>
         <entry key="/results/hopper/DS10000_Mno_relu_WD0.001/NRC3_epoch.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/results/reacher/DS1000_Mno_relu_WD0.0015/NRC1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
