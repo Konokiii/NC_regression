@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6dc0f2a-e5ca-49c2-b822-42d4bd36ab9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/main/BC.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/BC.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plots/preprocess_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plots/rebuttal_plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plots/log_alias.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/log_alias.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plots/new_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/plot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,29 +38,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/konoki/Desktop/NC_regression/main/exp",
-    "settings.editor.selected.configurable": "preferences.toDoOptions"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/konoki/Desktop/NC_regression/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.toDoOptions&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0" />
+      <recent name="$PROJECT_DIR$/plots" />
+      <recent name="$PROJECT_DIR$/main/exp/rebuttal" />
       <recent name="$PROJECT_DIR$/main/exp" />
       <recent name="$PROJECT_DIR$/main/exp/case1" />
-      <recent name="$PROJECT_DIR$/main" />
-      <recent name="$PROJECT_DIR$/results" />
-      <recent name="$PROJECT_DIR$/main/exp/case2" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/results/submission" />
       <recent name="$PROJECT_DIR$/plots" />
       <recent name="$PROJECT_DIR$/results/Carla/carla2d" />
       <recent name="$PROJECT_DIR$/results/reacher/DS500_Mno_relu_WD0.003" />
       <recent name="$PROJECT_DIR$/figures/action_distribution" />
-      <recent name="$PROJECT_DIR$/dataset" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

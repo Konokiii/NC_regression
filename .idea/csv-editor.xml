@@ -3,126 +3,168 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/results/age/age/Age1D.csv">
+        <entry key="$APPLICATION_CONFIG_DIR$/scratches/progress.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$APPLICATION_CONFIG_DIR$/scratches/progress_new.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/results/rebuttal/hopper/Ehopper_Mnull_Eps200000_DS10000_wd5e-5/nrc3_s0.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/carla1d/carla1d/Carla1D_200ep.csv">
+        <entry key="/results/rebuttal/hopper/Ehopper_Mnull_Eps200000_DS10000_wd5e-5/nrc3_s1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/carla2d/carla2d/Carla2D_gamma.csv">
+        <entry key="/results/rebuttal/hopper/Ehopper_Mnull_Eps200000_DS10000_wd5e-5/nrc3_s2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/carla2d/carla2d_new/Carla2D_100ep.csv">
+        <entry key="/results/rebuttal/hopper/Ehopper_Mnull_Eps200000_DS10000_wd5e-5/progress_s0.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/carla2d/carla2d_new/Carla2D_gamma.csv">
+        <entry key="/results/rebuttal/hopper/Ehopper_Mnull_Eps200000_DS10000_wd5e-5/progress_s1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/carla2d/carla2d_wd/5WD_Carla2D_150ep.csv">
+        <entry key="/results/rebuttal/hopper/Ehopper_Mnull_Eps200000_DS10000_wd5e-5/progress_s2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/hopper/DS10000_Mno_relu_WD0.00095/NRC3_epoch.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0/nrc3_s0.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/hopper/DS10000_Mno_relu_WD0.001/NRC1.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0/nrc3_s1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/hopper/DS10000_Mno_relu_WD0.001/NRC3_c.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0/nrc3_s2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/hopper/DS10000_Mno_relu_WD0.001/NRC3_epoch.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0/progress_s0.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/reacher/DS1000_Mno_relu_WD0.0015/NRC1.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0/progress_s1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/reacher/final/NRC1.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd1e-2/nrc3_s0.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/reacher/final/NRC3_epoch.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd1e-2/nrc3_s1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/swimmer/DS1000_Mgelu_WD0.01/NRC1.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd1e-2/nrc3_s2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/swimmer/DS1000_Mgelu_WD0.01/NRC2.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd1e-2/progress_s0.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/swimmer/DS1000_Mgelu_WD0.01/testError.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd1e-2/progress_s1.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/swimmer/DS1000_Mgelu_WD0.01/trainError.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd1e-2/progress_s2.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/results/swimmer/final/NRC2.csv">
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd5e-3/nrc3_s0.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd5e-3/nrc3_s2.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd5e-3/progress_s0.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd5e-4/nrc3_s0.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd5e-5/nrc3_s0.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

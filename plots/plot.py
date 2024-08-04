@@ -3,7 +3,8 @@ from plots.log_alias import *
 import matplotlib.pyplot as plt
 import matplotlib.image as pltimg
 
-DEFAULT_BASE_PATH = '../results'
+
+DEFAULT_BASE_PATH = './results'
 DEFAULT_SAVE_PATH = './figures/'
 DEFAULT_ENVS = ('hopper',)
 DEFAULT_LINESTYLES = tuple(['solid' for _ in range(8)])
@@ -11,13 +12,16 @@ DEFAULT_COLORS = ('tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:brown',
 DEFAULT_Y_VALUE = 'AverageTestEpRet'
 DEFAULT_SMOOTH = 1
 
+data_folder = './results'
+save_folder = './figures/'
+
 y_use_log = None
 
 dataset_group = [['reacher', 'swimmer', 'hopper'],
                  ['carla2d', 'carla1d', 'age']]
 variant = [[reacher_final, swimmer_final, hopper_final],
-           [carla2d_final, carla1d_final, age_final]]
-use_ratio = [((3 / 8, 1 / 40, 5 / 8), (0.25, 1 / 40, 0.25)), None]
+            [carla2d_final, carla1d_final, age_final]]
+use_ratio = [((3/8, 1/40, 5/8), (0.25, 1/40, 0.25)), None]
 # dataset_group = [['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d', 'age']]
 # variant_group = [[reacher_final, swimmer_final, hopper_final, carla2d_final, carla1d_final, age_final]]
 # use_ratio = [((3/8, 1/40, 5/8, 1, 1, 1), (0.25, 1/40, 0.25, 1, 1, 1))]
@@ -28,7 +32,7 @@ ylabel = ['NRC1-3', 'Accuracy']
 # use_ratio = [None, None]
 
 
-data_plot = {'reacher': {}, 'swimmer': {}, 'hopper': {}, 'carla2d': {}, 'carla1d': {}, 'age': {}}
+data_plot = {'reacher': {}, 'swimmer':{}, 'hopper':{}, 'carla2d':{}, 'carla1d':{}, 'age':{}}
 for l, datasets in enumerate(dataset_group):
     for i, y_values in enumerate(measure_group):
         for j, dataset in enumerate(datasets):
@@ -118,9 +122,11 @@ for l, datasets in enumerate(dataset_group):
                 if dataset in ['reacher', 'hopper', 'swimmer'] and y_metric == 'NRC3_epoch':
                     y_to_plot = y_to_plot ** 2
 
+
                 print('4===============')
 
-                data_plot[dataset][y_metric] = {'x': x_to_plot, 'y': y_to_plot}
+
+                data_plot[dataset][y_metric] ={'x':x_to_plot, 'y':y_to_plot}
 
                 # ==================== dataset have been extracted ====================
 
@@ -133,13 +139,10 @@ num_rows = len(measure_group) * len(dataset_group)
 # data_plot['reacher']['trainError']['x'] = data_plot['reacher']['trainError']['x']/12
 # data_plot['reacher']['testError']['x'] = data_plot['reacher']['testError']['x']/12
 
-for d in ['reacher', 'hopper', 'swimmer']:
-    dataset = data_plot[d]
-    keys = dataset.keys()
-    for k in keys:
+for dataset in ['reacher', 'hopper', 'swimmer']:
+    for k in data_plot[dataset].keys():
         if k == 'NRC3_c':
             continue
-        dataset[k]['x']= dataset[k]['x']*100
         total_size = dataset[k]['x'].shape[0]
         num_points = 200
         gap = total_size // num_points
@@ -150,7 +153,6 @@ for d in ['reacher', 'hopper', 'swimmer']:
 # fig, axes = plt.subplots(num_rows, num_columns, )
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.gridspec as gridspec
-
 fig = plt.figure(figsize=(10, 8))
 
 gs = fig.add_gridspec(2, 1, hspace=0.27)  # spacing between the two groups
@@ -158,24 +160,22 @@ gs = fig.add_gridspec(2, 1, hspace=0.27)  # spacing between the two groups
 gs0 = gs[0].subgridspec(2, 3, hspace=0.2)  # spacing within the groups
 gs1 = gs[1].subgridspec(2, 3, hspace=0.2)
 
-data_name = {'reacher': "Reacher", 'swimmer': 'Swimmer', 'hopper': "Hopper", 'carla2d': 'Carla 2D',
-             'carla1d': 'Carla 1D', 'age': 'UTKFace'}
+data_name = {'reacher': "Reacher", 'swimmer': 'Swimmer', 'hopper':"Hopper", 'carla2d':'Carla 2D', 'carla1d':'Carla 1D', 'age':'UTKFace'}
 
 for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d', 'age']):
 
-    # ==== first plot nrc
+    #==== first plot nrc
     row = 0 if dataset in ['reacher', 'swimmer', 'hopper'] else 2
     if dataset in ['reacher', 'swimmer', 'hopper']:
-        ax = fig.add_subplot(gs0[0, i % 3])
+        ax = fig.add_subplot(gs0[0, i%3])
     else:
         ax = fig.add_subplot(gs1[0, i % 3])
 
     if dataset in ['reacher', 'swimmer', 'hopper', 'carla2d']:
         ax.plot(data_plot[dataset]['NRC1']['x'], data_plot[dataset]['NRC1']['y'], color='C0', label='NRC1')
-        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2',
-                linestyle='--')
+        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2', linestyle='--')
         ax.tick_params(axis='y', colors='C0')
-        # ax.set_ylabel('NRC1/NRC2', color='C0')
+        #ax.set_ylabel('NRC1/NRC2', color='C0')
 
         ax2 = ax.twinx()
         ax2.plot(data_plot[dataset]['NRC3_epoch']['x'], data_plot[dataset]['NRC3_epoch']['y'], color='C1', label='NRC3')
@@ -190,12 +190,7 @@ for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d
         ax.legend(handles, labels)
         ax.grid(True, linestyle='--')
         if dataset == 'reacher':
-            print(ax.get_xticks().tolist())
-            a = ax.get_xticks().tolist()
-            for t, tick in enumerate(a):
-                a[t] = str(a[t] // int(1e6)) +'M'
-            ax.set_xticklabels(a)
-
+            ax.set_xticklabels(['0', '0.4M', '0.8M', '1.2M'])
         if dataset == 'swimmer':
             ax.set_xticklabels(['0', '200K', '400K', '600K', '800K'])
         if dataset == 'hopper':
@@ -203,8 +198,7 @@ for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d
 
     else:
         ax.plot(data_plot[dataset]['NRC1']['x'], data_plot[dataset]['NRC1']['y'], color='C0', label='NRC1')
-        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2',
-                linestyle='--')
+        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2', linestyle='--')
         # ax.set_ylabel('NRC1/NRC2')
         ax.grid(True, linestyle='--')
         ax.legend()
@@ -227,7 +221,7 @@ for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d
         ax.set_xticklabels(['0', '200K', '400K', '600K', '800K'])
     if dataset == 'hopper':
         ax.set_xticklabels(['0', '40K', '80K', '120K'])
-    if dataset == 'carla1d':
+    if dataset=='carla1d':
         # ax.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
         # ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
         # ax.get_yaxis().set_major_formatter(plt.LogFormatter(10, labelOnlyBase=False))
@@ -238,7 +232,6 @@ for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d
 # fig, axes = plt.subplots(num_rows, num_columns, )
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.gridspec as gridspec
-
 fig = plt.figure(figsize=(10, 8))
 
 gs = fig.add_gridspec(2, 1, hspace=0.3)  # spacing between the two groups
@@ -246,22 +239,20 @@ gs = fig.add_gridspec(2, 1, hspace=0.3)  # spacing between the two groups
 gs0 = gs[0].subgridspec(2, 3, hspace=0.2)  # spacing within the groups
 gs1 = gs[1].subgridspec(2, 3, hspace=0.2)
 
-data_name = {'reacher': "Reacher", 'swimmer': 'Swimmer', 'hopper': "Hopper", 'carla2d': 'Carla 2D',
-             'carla1d': 'Carla 1D', 'age': 'UTKFace'}
+data_name = {'reacher': "Reacher", 'swimmer': 'Swimmer', 'hopper':"Hopper", 'carla2d':'Carla 2D', 'carla1d':'Carla 1D', 'age':'UTKFace'}
 
 for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d', 'age']):
 
-    # ==== first plot nrc
+    #==== first plot nrc
     row = 0 if dataset in ['reacher', 'swimmer', 'hopper'] else 2
     if dataset in ['reacher', 'swimmer', 'hopper']:
-        ax = fig.add_subplot(gs0[0, i % 3])
+        ax = fig.add_subplot(gs0[0, i%3])
     else:
         ax = fig.add_subplot(gs1[0, i % 3])
 
     if dataset in ['reacher', 'swimmer', 'hopper', 'carla2d']:
         ax.plot(data_plot[dataset]['NRC1']['x'], data_plot[dataset]['NRC1']['y'], color='C0', label='NRC1')
-        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2',
-                linestyle='--')
+        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2', linestyle='--')
         ax.tick_params(axis='y', colors='C0')
         ax.set_ylabel('NRC1/NRC2', color='C0')
 
@@ -287,8 +278,7 @@ for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d
 
     else:
         ax.plot(data_plot[dataset]['NRC1']['x'], data_plot[dataset]['NRC1']['y'], color='C0', label='NRC1')
-        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2',
-                linestyle='--')
+        ax.plot(data_plot[dataset]['NRC2']['x'], data_plot[dataset]['NRC2']['y'], color='C0', label='NRC2', linestyle='--')
         ax.set_ylabel('NRC1/NRC2')
         ax.grid(True, linestyle='--')
     ax.set_title(data_name[dataset], fontweight='bold')
@@ -304,7 +294,7 @@ for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d
     ax.legend()
     ax.set_ylabel('MSE')
     ax.grid(True, linestyle='--')
-
+    
     if dataset == 'reacher':
         ax.set_xticklabels(['0', '0.4M', '0.8M', '1.2M'])
     if dataset == 'swimmer':
@@ -312,10 +302,14 @@ for i, dataset in enumerate(['reacher', 'swimmer', 'hopper', 'carla2d', 'carla1d
     if dataset == 'hopper':
         ax.set_xticklabels(['0', '40K', '80K', '120K'])
 
-    if dataset == 'carla1d':
+    if dataset=='carla1d':
         # ax.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
-        ax.ticklabel_format(axis='y', style='sci', scilimits=(0, 0))
+        ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
     ax.set_xlabel('Epoch')
+
+
+
+
 
 for i in range(2, 4):
     for j in range(3):
@@ -330,12 +324,13 @@ for pos in positions_row_3_4:
 
 plt.show()
 
+
+
 # Create a figure
 fig = plt.figure(figsize=(10, 8))
 
 # Create a GridSpec with 4 rows and 3 columns
 import matplotlib.gridspec as gridspec
-
 gs = gridspec.GridSpec(4, 3, hspace=0.4)
 
 # Add subplots in the first section (first two rows)
@@ -354,3 +349,5 @@ for i in range(2, 4):
 plt.subplots_adjust(hspace=0.6)
 
 plt.show()
+
+

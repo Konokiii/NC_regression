@@ -23,7 +23,7 @@ def main():
         'env', 'E', ['reacher'],
         'mode', 'M', ['null'],
 
-        'max_epochs', 'Eps', [int(1.2e6)],
+        'max_epochs', 'Eps', [int(3e6)],
         'batch_size', '', [256],
         'data_size', 'DS', [1000],
         'arch', '', ['256-R-256-R-256-R|T'],
@@ -31,7 +31,7 @@ def main():
 
         'optimizer', '', ['sgd'],
         'lamH', '', [-1],
-        'lamW', 'wd', [1.5e-3, 5e-4, 5e-5, 5e-6, 0],
+        'lamW', 'wd', [0, 1.5e-3, 5e-4, 5e-5, 5e-6],
         'lr', '', [1e-2],
 
         'eval_freq', '', [100],
@@ -51,7 +51,7 @@ def main():
 
     config.data_folder = '/NC_regression/dataset/mujoco'
     config.project = 'NC_rebuttal'
-    config.group = 'first'
+    config.group = 'long'
     config.name = '_'.join([v + str(getattr(config, k)) for k, v in hyper2logname.items() if v != ''])
 
     run_BC(config)
