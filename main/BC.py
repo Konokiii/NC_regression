@@ -43,6 +43,7 @@ class TrainConfig:
 
     mode: str = 'null'
     data_folder: str = '/NC_regression/dataset/mujoco'
+    saved_model: Optional[str] = None
 
     # Wandb logging
     project: str = "NC_regression"
@@ -519,7 +520,14 @@ def run_BC(config: TrainConfig):
 
     state_dim = train_dataset.get_state_dim()
     action_dim = train_dataset.get_action_dim()
-    actor = Actor(state_dim, action_dim, arch=config.arch).to(config.device)
+    if config.saved_model is not None:
+        load_model_path = f'/NC_regression/models/{config.env}/{config.saved_model}.pth'
+        if os.path.exists(load_model_path):
+            actor = torch.load(load_model_path).to(config.device)
+        else:
+            raise FileNotFoundError('Try to load pretrained model, but file not found.')
+    else:
+        actor = Actor(state_dim, action_dim, arch=config.arch).to(config.device)
 
     actor_optimizer = {'adam': torch.optim.Adam,
                        'sgd': torch.optim.SGD}[config.optimizer](actor.parameters(), lr=config.lr)
