@@ -43,6 +43,7 @@ class TrainConfig:
 
     mode: str = 'null'
     data_folder: str = '/NC_regression/dataset/mujoco'
+    project_folder: str = '/NC_regression'
     saved_model: Optional[str] = None
 
     # Wandb logging
@@ -521,7 +522,7 @@ def run_BC(config: TrainConfig):
     state_dim = train_dataset.get_state_dim()
     action_dim = train_dataset.get_action_dim()
     if config.saved_model is not None:
-        load_model_path = f'/NC_regression/models/{config.env}/{config.saved_model}.pth'
+        load_model_path = os.path.join(config.project_folder, f'models/{config.env}/{config.saved_model}.pth')
         if os.path.exists(load_model_path):
             actor = torch.load(load_model_path).to(config.device)
         else:
@@ -599,7 +600,7 @@ def run_BC(config: TrainConfig):
 
         if (epoch + 1) in [config.max_epochs // (i+1) for i in range(4)]:
             # Save NRC3 related data to local for later plots
-            save_folder = '/NC_regression/results/wwt'
+            save_folder = os.path.join(config.project_folder, 'results/wwt')
             os.makedirs(save_folder, exist_ok=True)
             save_path = os.path.join(save_folder, config.name + '.pkl')
             with open(save_path, 'wb') as file:
@@ -618,7 +619,7 @@ def run_BC(config: TrainConfig):
     all_WWT = np.concatenate(all_WWT, axis=0)
 
     # Save NRC3 related data to local for later plots
-    save_folder = '/NC_regression/results/wwt'
+    save_folder = os.path.join(config.project_folder, 'results/wwt')
     os.makedirs(save_folder, exist_ok=True)
     save_path = os.path.join(save_folder, config.name + '.pkl')
     with open(save_path, 'wb') as file:
@@ -672,7 +673,7 @@ def run_BC(config: TrainConfig):
     )
 
     # Save model
-    save_folder = f'/NC_regression/models/{config.env}'
+    save_folder = os.path.join(config.project_folder, f'models/{config.env}')
     os.makedirs(save_folder, exist_ok=True)
     save_path = os.path.join(save_folder, config.name + '.pth')
     torch.save(actor, save_path)
