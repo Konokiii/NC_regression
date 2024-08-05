@@ -156,7 +156,7 @@ def compute_metrics(metrics, split, device):
     U = gram_schmidt(W)
     P_E = torch.mm(U.T, U)
     H_proj = torch.mm(H, P_E)
-    result['NRC2'] = F.mse_loss(H_proj, H).item()
+    result['NRC2'] = (torch.norm(H_proj - H)**2 / B).item()
     del H_proj
 
     return result
