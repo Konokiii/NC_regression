@@ -5,12 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6dc0f2a-e5ca-49c2-b822-42d4bd36ab9b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/plots/preprocess_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plots/rebuttal_plot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/case2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/case2.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/hopper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/hopper.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/reacher.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/reacher.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/swimmer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/iclr2025/swimmer.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plots/load_data_from_wandb.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plots/plot_case2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/BC.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/BC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/hopper.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/rebuttal/hopper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/hopper.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/rebuttal/hopper.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/long_nyuad.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/rebuttal/long_nyuad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/long_nyuad.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/rebuttal/long_nyuad.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/reacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/rebuttal/reacher.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/swimmer.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/rebuttal/swimmer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plots/log_alias.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/log_alias.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/new_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plots/preprocess_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/preprocess_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plots/rebuttal_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/rebuttal_plot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,33 +44,59 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Konokiii"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Konokiii/NC_regression.git",
+    "accountId": "b12692a3-de02-4de3-a56a-b247de345437"
+  }
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/e63b7403310db7ce3b740d6e9d63f517/Message/MessageTemp/dabf2f9afca500f8037f6e7d251c6f95/File/plot.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 1
+}]]></component>
   <component name="ProjectId" id="2flgYnKIFvFn4KGH0aPUQBxavUb" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/konoki/Desktop/NC_regression/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.toDoOptions&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.scratch.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/konoki/Desktop/NC_regression/main/exp/iclr2025",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0" />
+      <recent name="$PROJECT_DIR$/main/exp/iclr2025" />
       <recent name="$PROJECT_DIR$/plots" />
       <recent name="$PROJECT_DIR$/main/exp/rebuttal" />
+      <recent name="$PROJECT_DIR$/results/rebuttal/swimmer/Eswimmer_Mnull_Eps1000000_DS1000_wd0" />
       <recent name="$PROJECT_DIR$/main/exp" />
-      <recent name="$PROJECT_DIR$/main/exp/case1" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/results/submission" />
@@ -63,6 +106,14 @@
       <recent name="$PROJECT_DIR$/figures/action_distribution" />
     </key>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PY-242.21829.153" />
+        <option value="bundled-python-sdk-464836ebc622-b74155a9e76b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.21829.153" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -71,8 +122,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1714381128730</updated>
+      <workItem from="1726559050676" duration="22880000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -90,5 +145,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/NC_regression$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1726651411467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
   </component>
 </project>

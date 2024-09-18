@@ -4,7 +4,7 @@
 #SBATCH --nodes=1
 #SBATCH --mem=16GB
 #SBATCH --mail-type=ALL # select which email types will be sent
-#SBATCH --mail-user=NETID@nyu.edu # NOTE: put your netid here if you want emails
+#SBATCH --mail-user=zd662@nyu.edu # NOTE: put your netid here if you want emails
 
 #SBATCH --array=0-5 # here the number depends on number of tasks in the array, e.g. 0-11 will create 12 tasks
 #SBATCH --output=../logs/%A_%a.out # %A is SLURM_ARRAY_JOB_ID, %a is SLURM_ARRAY_TASK_ID,
@@ -26,4 +26,4 @@ source /share/apps/NYUAD5/miniconda/3-4.11.0/bin/activate # to initialize conda 
 conda activate nrc # launch your virtual environment 'nrc' for this project
 export PYTHONPATH=$PYTHONPATH:$SCRATCH/NC_regression # add project root folder so that python import works fine
 cd $SCRATCH/NC_regression # start from the project root folder, since default data folder is ./dataset/mujoco in test.py
-python main/exp/rebuttal/long.py --setting ${SLURM_ARRAY_TASK_ID} # execute corresponding python file
+python main/exp/rebuttal/long_nyuad.py --setting ${SLURM_ARRAY_TASK_ID} # execute corresponding python file

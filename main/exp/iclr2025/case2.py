@@ -20,21 +20,21 @@ def main():
     setting = args.setting
 
     settings = [
-        'env', 'E', ['swimmer', 'reacher'],
-        'mode', 'M', ['null'],
+        'env', 'E', ['reacher', 'swimmer', 'hopper'],
+        'mode', '', ['no_relu'],
 
-        'max_epochs', 'Eps', [int(3e6)],
+        'max_epochs', 'Eps', [int(5e3)],
         'batch_size', '', [256],
-        'data_size', 'DS', [1000],
-        'arch', '', ['256-R-256-R-256-R|T'],
+        'data_size', 'DS', [int(1e5)],
+        'arch', '', ['256-BR-256-BR-256|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
-        'lamH', '', [-1],
-        'lamW', 'wd', [0],
+        'lamH', 'H', [],
+        'lamW', 'W', [1e-2, 1e-3, 1e-4, 1e-5, 0],
         'lr', '', [1e-2],
 
-        'eval_freq', '', [100],
+        'eval_freq', '', [10],
         'seed', 's', [0, 1, 2]
     ]
 
@@ -47,15 +47,13 @@ def main():
     """replace values"""
     config = TrainConfig(**actual_setting)
     config.device = DEVICE
-    config.num_eval_batch = 100
-    config.saved_model = f'E{config.env}_Mnull_Eps3000000_DS1000_wd0_s{config.seed}'
+    config.num_eval_batch = 400
+    config.lamH = config.lamW
 
-    config.data_folder = './dataset/mujoco'
-    config.project_folder = './'
-    config.project = 'NC_rebuttal'
-    config.group = 'extend'
+    config.data_folder = '/NC_regression/dataset/mujoco'
+    config.project = 'NC_new'
+    config.group = 'bn_case2'
     config.name = '_'.join([v + str(getattr(config, k)) for k, v in hyper2logname.items() if v != ''])
-    config.name = config.name.replace('3000000', '6000000')
 
     run_BC(config)
 

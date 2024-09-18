@@ -16,29 +16,37 @@ name_convertor = {'train.NRC1_pca1': 'NRC1_pca1',
                   'train.EVR4': 'EVR4',
                   'train.EVR5': 'EVR5',}
 
-for root, subdirs, files in os.walk('../results/rebuttal'):
-    if not subdirs:
-        print(root)
-        for s in range(3):
-            with open(os.path.join(root, f'nrc3_s{s}.csv'), 'r') as f:
-                df = pd.read_csv(f, header=0, delimiter=',')
-                exp_name = df['name'][0]
-                nrc3 = df['NRC3']
-            print('exp_name:', exp_name)
-            with open(os.path.join(root, f'progress_s{s}.csv'), 'r') as f:
-                df = pd.read_csv(f, header=0, delimiter=',')
-                columns_to_delete = [col for col in df.columns if 'MIN' in col or 'MAX' in col]
-                df.drop(columns=columns_to_delete, inplace=True)
+# for root, subdirs, files in os.walk('../results/rebuttal'):
+#     if any(d in root for d in ['carla1d', 'carla2d', 'utkface']):
+#         continue
+#     if not subdirs:
+#         print(root)
+#         for s in range(3):
+#             with open(os.path.join(root, f'nrc3_s{s}.csv'), 'r') as f:
+#                 df = pd.read_csv(f, header=0, delimiter=',')
+#                 nrc3 = df['NRC3']
+#             with open(os.path.join(root, f'progress_s{s}.csv'), 'r') as f:
+#                 df = pd.read_csv(f, header=0, delimiter=',')
+#                 df['NRC3'] = nrc3
+#                 if 'hopper' in str(root):
+#                     df['NRC1'] = df['NRC1_pca3']
+#                 else:
+#                     df['NRC1'] = df['NRC1_pca2']
+#
+#             save_to = os.path.join(root, f'progress_combined_s{s}.csv')
+#             if os.path.exists(save_to):
+#                 print(f'The data file exists in {save_to}')
+#             else:
+#                 df.to_csv(save_to, index=False)
 
-                df.rename(columns={exp_name + ' - ' + k: v for k, v in name_convertor.items()}, inplace=True)
-
-                df['NRC3'] = nrc3
-                if 'hopper' in str(root):
-                    df['NRC1'] = df['NRC1_pca3']
-                else:
-                    df['NRC1'] = df['NRC1_pca2']
-
-            df.to_csv(os.path.join(root, f'progress_combined_s{s}.csv'), index=False)
-
-
-
+# for root, subdirs, files in os.walk('../results/rebuttal'):
+#     if root == '../results/rebuttal/reacher/Ereacher_Mnull_Eps6000000_DS1000_wd0' or \
+#             root == '../results/rebuttal/swimmer/Eswimmer_Mnull_Eps6000000_DS1000_wd0':
+#         for s in range(3):
+#             with open(os.path.join(root, f'progress_combined_s{s}-2.csv'), 'r') as f:
+#                 df_former = pd.read_csv(f, header=0, delimiter=',')
+#             with open(os.path.join(root, f'progress_combined_s{s}.csv'), 'r') as f:
+#                 df_latter = pd.read_csv(f, header=0, delimiter=',')
+#             df_latter['Step'] = df_latter['Step'] + len(df_former)
+#             df_combined = pd.concat([df_former, df_latter], ignore_index=True)
+#             df_combined.to_csv(os.path.join(root, f'progress_combined_s{s}-3.csv'), index=False)

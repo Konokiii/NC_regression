@@ -39,22 +39,47 @@
 # hopper_wwt_big = 'Ehopper_Mbig_DS100000_wd0.00095_Eps20000'
 
 reacher_wd0 = 'Ereacher_Mnull_Eps1200000_DS1000_wd0'
-reacher_wd5e6 = 'Ereacher_Mnull_Eps1200000_DS1000_wd5e-6'
-reacher_wd5e5 = 'Ereacher_Mnull_Eps1200000_DS1000_wd5e-5'
-reacher_wd5e4 = 'Ereacher_Mnull_Eps1200000_DS1000_wd5e-4'
-reacher_wd15e3 = 'Ereacher_Mnull_Eps1200000_DS1000_wd1.5e-3'
+reacher_wd0_long = 'Ereacher_Mnull_Eps6000000_DS1000_wd0'
+reacher_wd5e6 = 'Ereacher_Mnull_Eps1200000_DS1000_wd5e-06'
+reacher_wd5e5 = 'Ereacher_Mnull_Eps1200000_DS1000_wd5e-05'
+reacher_wd5e4 = 'Ereacher_Mnull_Eps1200000_DS1000_wd0.0005'
+reacher_wd15e3 = 'Ereacher_Mnull_Eps1200000_DS1000_wd0.0015'
 reacher = reacher_wd15e3
 
 swimmer_wd0 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd0'
-swimmer_wd5e5 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd5e-5'
-swimmer_wd5e4 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd5e-4'
-swimmer_wd5e3 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd5e-3'
-swimmer_wd1e2 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd1e-2'
+swimmer_wd0_long = 'Eswimmer_Mnull_Eps6000000_DS1000_wd0'
+swimmer_wd5e5 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd5e-05'
+swimmer_wd5e4 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd0.0005'
+swimmer_wd5e3 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd0.005'
+swimmer_wd1e2 = 'Eswimmer_Mnull_Eps1000000_DS1000_wd0.01'
 swimmer = swimmer_wd1e2
 
 hopper_wd0 = 'Ehopper_Mnull_Eps200000_DS10000_wd0'
-hopper_wd5e6 = 'Ehopper_Mnull_Eps200000_DS10000_wd5e-6'
-hopper_wd5e5 = 'Ehopper_Mnull_Eps200000_DS10000_wd5e-5'
-hopper_wd5e4 = 'Ehopper_Mnull_Eps200000_DS10000_wd5e-4'
-hopper_wd1e3 = 'Ehopper_Mnull_Eps200000_DS10000_wd1e-3'
+hopper_wd0_long = 'Ehopper_Mnull_Eps500000_DS10000_wd0'
+hopper_wd5e6 = 'Ehopper_Mnull_Eps200000_DS10000_wd5e-06'
+hopper_wd5e5 = 'Ehopper_Mnull_Eps200000_DS10000_wd5e-05'
+hopper_wd5e4 = 'Ehopper_Mnull_Eps200000_DS10000_wd0.0005'
+hopper_wd1e3 = 'Ehopper_Mnull_Eps200000_DS10000_wd0.001'
 hopper = hopper_wd1e3
+
+carla1d_wd0 = 'WD0'
+carla1d_wd1e2 = 'WD1e-2'
+carla1d_wd5e3 = 'WD5e-3'
+carla1d_wd5e4 = 'WD5e-4'
+carla1d = carla1d_wd1e2
+
+carla2d_wd0 = 'WD0'
+carla2d_wd1e1 = 'WD1e-1'
+carla2d_wd1e2 = 'WD1e-2'
+carla2d_wd5e3 = 'WD5e-3'
+carla2d_wd5e4 = 'WD5e-4'
+carla2d_wd5e5 = 'WD5e-5'
+carla2d = carla2d_wd1e1
+
+utkface_wd0 = 'WD0'
+utkface_wd1e1 = 'WD1e-1'
+utkface_wd1e2 = 'WD1e-2'
+utkface_wd5e3 = 'WD5e-3'
+utkface_wd5e4 = 'WD5e-4'
+utkface_wd5e5 = 'WD5e-5'
+utkface = utkface_wd1e1

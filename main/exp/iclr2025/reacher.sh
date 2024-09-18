@@ -26,5 +26,5 @@ echo "Job ID: ${SLURM_ARRAY_TASK_ID}"
 singularity exec --nv -B /scratch/$USER/NC_regression:/NC_regression -B /scratch/$USER/cql-sandbox/opt/conda/lib/python3.8/site-packages/mujoco_py/:/opt/conda/lib/python3.8/site-packages/mujoco_py/ /scratch/$USER/cql-sandbox bash -c "
 cd /NC_regression
 export PYTHONPATH=$PYTHONPATH:/NC_regression
-python main/exp/rebuttal/hopper.py --setting ${SLURM_ARRAY_TASK_ID}
+python main/exp/rebuttal/reacher.py --setting ${SLURM_ARRAY_TASK_ID}
 "

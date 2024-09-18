@@ -31,8 +31,8 @@ class TrainConfig:
     checkpoints_path: Optional[str] = None  # Save path
     load_model: str = ""  # Model load file name, "" doesn't load
     batch_size: int = 256  # Batch size for all networks
-    num_eval_batch: int = 100  # Do NC evaluation over a subset of the whole dataset
-    data_size: int = 10  # Number of episodes to use
+    num_eval_batch: int = 400  # Do NC evaluation over a subset of the whole dataset
+    data_size: int = 1000  # Number of samples to use
     normalize: str = 'none'  # Choose from 'none', 'normal', 'standard', 'center'
 
     arch: str = '256-R-256-R|T'  # Actor architecture
@@ -82,12 +82,13 @@ def gram_schmidt(W):
     return U
 
 
-def compute_metrics(metrics, split, device):
+def compute_metrics(metrics, split, device, info=None):
     result = {}
     y = metrics['targets']  # (B,2)
     yhat = metrics['outputs']  # (B,2)
     W = metrics['weights']  # (2,256)
     H = metrics['embeddings']  # (B,256)
+    H_normalized = H / (torch.norm(H, dim=1, keepdim=True) + 1e-8)
     B = H.shape[0]
 
     result['prediction_error'] = F.mse_loss(y, yhat).item()
@@ -102,6 +103,9 @@ def compute_metrics(metrics, split, device):
     SS_res = torch.sum((y-yhat)**2).item()
     SS_tot = torch.sum((y-y.mean(dim=0))**2).item()
     result['R_sq'] = 1 - SS_res/SS_tot
+
+    result['H_norm'] = torch.norm(H, p=2, dim=1).mean().item()
+    result['W_norm'] = torch.norm(W, p=2, dim=1).mean().item()
 
     # WWT
     WWT = W @ W.T
@@ -133,6 +137,7 @@ def compute_metrics(metrics, split, device):
         print(e)
         for k in range(n_components):
             result[f'NRC1_pca{k+1}'] = -1
+            result[f'NRC1n_pca{k + 1}'] = -1
     else:
         H_pca = torch.tensor(pca_for_H.components_[:n_components, :], device=device)
         H_U = gram_schmidt(H_pca)
@@ -141,15 +146,30 @@ def compute_metrics(metrics, split, device):
 
             H_P = torch.mm(H_U[:k+1, :].T, H_U[:k+1, :])
             H_proj_PCA = torch.mm(H, H_P)
-            result[f'NRC1_pca{k+1}'] = F.mse_loss(H_proj_PCA, H).item()
-    del H_pca, H_U, H_P, H_proj_PCA, pca_for_H, H_np
+            result[f'NRC1_pca{k + 1}'] = torch.norm(H_proj_PCA - H).item() ** 2 / B
+
+            H_proj_PCA_normalized = torch.mm(H_normalized, H_P)
+            result[f'NRC1n_pca{k + 1}'] = torch.norm(H_proj_PCA_normalized - H_normalized).item() ** 2 / B
+    del H_pca, H_U, H_P, H_proj_PCA, H_proj_PCA_normalized, pca_for_H, H_np
+
+    result['NRC1'] = result[f'NRC1_pca{y_dim}']
+    result['NRC1n'] = result[f'NRC1n_pca{y_dim}']
 
     # NRC2 with Gram-Schmidt
     U = gram_schmidt(W)
     P_E = torch.mm(U.T, U)
     H_proj_W = torch.mm(H, P_E)
-    result['NRC2'] = F.mse_loss(H_proj_W, H).item()
-    del H_proj_W
+    H_proj_W_normalized = torch.mm(H_normalized, P_E)
+    result['NRC2'] = torch.norm(H - H_proj_W).item() ** 2 / B
+    result['NRC2n'] = torch.norm(H_normalized - H_proj_W_normalized).item() ** 2 / B
+    del H_proj_W, H_proj_W_normalized
+
+    if info:
+        assert isinstance(info, dict), 'Extra info used to compute should be a dictionary.'
+        NRC3_target = info['NRC3_target']
+
+        # NRC3 with UFM assumption
+        result['NRC3_ufm'] = torch.norm(WWT / torch.norm(WWT) - torch.tensor(NRC3_target, device=device)).item() ** 2
 
     # NRC2: Project H to span(w1, w2)
     # try:
@@ -239,13 +259,10 @@ class MujocoBuffer(Dataset):
             with open(file_path, 'rb') as file:
                 dataset = pickle.load(file)
                 if split == 'test':
-                    # if env in ['swimmer', 'hopper'] and data_size < 5000:
-                    #     data_size = 1000
-                    # elif env == 'reacher' and data_size < 250:
-                    #     data_size = 50
-                    # else:
-                    #     data_size //= 5
-                    data_size //= 5
+                    if env in ['swimmer', 'hopper']:
+                        data_size = max(data_size // 5, 1000)
+                    elif env == 'reacher':
+                        data_size = max(data_size // 5, 50)
 
                 self.size = data_size
                 self.states = dataset['observations'][:self.size, :]
@@ -453,7 +470,7 @@ class BC:
         return log_dict
 
     @torch.no_grad()
-    def NC_eval(self, dataloader, split):
+    def NC_eval(self, dataloader, split, info=None):
         self.actor.eval()
         y = torch.empty((0,), device=self.device)
         H = torch.empty((0,), device=self.device)
@@ -476,7 +493,7 @@ class BC:
                'outputs': Wh,
                'weights': W
                }
-        log_dict = compute_metrics(res, split, self.device)
+        log_dict = compute_metrics(res, split, self.device, info=info)
         self.actor.train()
 
         return log_dict
@@ -558,16 +575,14 @@ def run_BC(config: TrainConfig):
 
     # TODO: fix and optimize wandb log.
     train_theory_stats, Sigma, Sigma_sqrt = train_dataset.get_theory_stats()
-    # A_case2 = None
-    # if config.lamH != -1 and config.lamW != 0:
-    #     for d in [train_theory_stats]:
-    #         A_case2 = (config.lamH / config.lamW) ** 0.5 * Sigma_sqrt - config.lamH * np.eye(Sigma_sqrt.shape[0])
-    #         d['A11'] = A_case2[0, 0]
-    #         d['A22'] = A_case2[1, 1]
-    #         d['A12'] = A_case2[0, 1]
+    info = None
+    if config.lamH != -1:
+        NRC3_target = Sigma_sqrt - (config.lamH * config.lamW) ** 0.5 * np.eye(Sigma_sqrt.shape[0])
+        NRC3_target = NRC3_target / np.linalg.norm(NRC3_target)
+        info = {'NRC3_target': NRC3_target}
 
-    train_log = trainer.NC_eval(train_loader, split='train')
-    val_log = trainer.NC_eval(val_loader, split='test')
+    train_log = trainer.NC_eval(train_loader, split='train', info=info)
+    val_log = trainer.NC_eval(val_loader, split='test', info=info)
     wandb.log({'train': train_log,
                'validation': val_log,
                'C': train_theory_stats,

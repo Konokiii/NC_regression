@@ -7,7 +7,7 @@
 #SBATCH --mail-type=ALL # select which email types will be sent
 #SBATCH --mail-user=zd662@nyu.edu # NOTE: put your netid here if you want emails
 
-#SBATCH --array=0-14 # here the number depends on number of tasks in the array, e.g. 0-11 will create 12 tasks
+#SBATCH --array=0-44 # here the number depends on number of tasks in the array, e.g. 0-11 will create 12 tasks
 #SBATCH --output=../logs/%A_%a.out # %A is SLURM_ARRAY_JOB_ID, %a is SLURM_ARRAY_TASK_ID,
 #SBATCH --error=../logs/%A_%a.err # MAKE SURE WHEN YOU RUN THIS, ../train_logs IS A VALID PATH
 
@@ -26,5 +26,5 @@ echo "Job ID: ${SLURM_ARRAY_TASK_ID}"
 singularity exec --nv -B /scratch/$USER/NC_regression:/NC_regression -B /scratch/$USER/cql-sandbox/opt/conda/lib/python3.8/site-packages/mujoco_py/:/opt/conda/lib/python3.8/site-packages/mujoco_py/ /scratch/$USER/cql-sandbox bash -c "
 cd /NC_regression
 export PYTHONPATH=$PYTHONPATH:/NC_regression
-python main/exp/rebuttal/hopper.py --setting ${SLURM_ARRAY_TASK_ID}
+python main/exp/iclr2025/case2.py --setting ${SLURM_ARRAY_TASK_ID}
 "
