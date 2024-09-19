@@ -21,17 +21,17 @@ def main():
 
     settings = [
         'env', 'E', ['hopper'],
-        'mode', 'M', ['null'],
+        'mode', 'M', ['null', 'no_relu'],
 
         'max_epochs', 'Eps', [int(2e5)],
         'batch_size', '', [256],
         'data_size', 'DS', [10000],
-        'arch', '', ['256-R-256-R-256-R|T'],
+        # 'arch', '', ['256-R-256-R-256-R|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
         'lamH', '', [-1],
-        'lamW', 'wd', [0, 1e-3, 5e-4, 5e-5, 5e-6],
+        'lamW', 'wd', [0, 1e-2, 5e-3, 1e-3, 5e-4, 5e-5, 5e-6],
         'lr', '', [1e-2],
 
         'eval_freq', '', [100],
@@ -50,6 +50,12 @@ def main():
     config.num_eval_batch = 100
     if config.mode == 'no_relu':
         config.arch = '256-R-256-R-256|T'
+    elif config.mode == 'null':
+        config.arch = '256-R-256-R-256-R|T'
+
+    if config.mode == 'null':  # already done the following exps, so skip
+        if config.lamW <= 1e-3:
+            return
 
     config.data_folder = '/NC_regression/dataset/mujoco'
     config.project = 'NC_new'

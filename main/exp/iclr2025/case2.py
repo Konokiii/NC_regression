@@ -21,16 +21,16 @@ def main():
 
     settings = [
         'env', 'E', ['reacher', 'swimmer', 'hopper'],
-        'mode', '', ['no_relu'],
+        'mode', '', ['bn_no_relu'],
 
-        'max_epochs', 'Eps', [int(5e3)],
+        'max_epochs', 'Eps', [int(1e4)],
         'batch_size', '', [256],
         'data_size', 'DS', [int(1e5)],
         'arch', '', ['256-BR-256-BR-256|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
-        'lamH', 'H', [],
+        # 'lamH', 'H', [],
         'lamW', 'W', [1e-2, 1e-3, 1e-4, 1e-5, 0],
         'lr', '', [1e-2],
 

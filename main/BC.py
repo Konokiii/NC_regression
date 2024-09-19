@@ -125,7 +125,6 @@ def compute_metrics(metrics, split, device, info=None):
         result['cosSIM_W13'] = F.cosine_similarity(W[0], W[2], dim=0).item()
         result['cosSIM_W23'] = F.cosine_similarity(W[1], W[2], dim=0).item()
     result['WWT_norm'] = torch.norm(WWT).item()
-    del WWT
 
     # NRC1 & explained variance ratio
     H_np = H.cpu().numpy()
@@ -605,8 +604,8 @@ def run_BC(config: TrainConfig):
             W = actor.W.weight.detach().clone().cpu().numpy()
             WWT = W @ W.T
             all_WWT.append(WWT.reshape(1, -1))
-            train_log = trainer.NC_eval(train_loader, split='train')
-            val_log = trainer.NC_eval(val_loader, split='test')
+            train_log = trainer.NC_eval(train_loader, split='train', info=info)
+            val_log = trainer.NC_eval(val_loader, split='test', info=info)
             wandb.log({'train_mse_loss': epoch_train_loss,
                        'train': train_log,
                        'validation': val_log,
