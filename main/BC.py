@@ -204,6 +204,7 @@ def wandb_init(config: dict) -> None:
         group=config["group"],
         name=config["name"],
         id=str(uuid.uuid4()),
+        settings=wandb.Settings(start_method="fork")  # Workaround for ERROR Run initialization has timed out after 60.0 sec.
     )
     wandb.run.save()
 
