@@ -21,21 +21,21 @@ def main():
 
     settings = [
         'env', 'E', ['swimmer'],
-        'mode', 'M', ['null'],
+        'mode', '', ['bn'],
 
-        'max_epochs', 'Eps', [int(1e6)],
+        'max_epochs', 'Eps', [int(1e4)],
         'batch_size', '', [256],
-        'data_size', 'DS', [1000],
-        'arch', '', ['256-R-256-R-256-R|T'],
+        'data_size', 'DS', [int(1e5)],
+        'arch', '', ['256-BR-256-BR-256-BR|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
-        'lamH', '', [-1],
-        'lamW', 'wd', [0, 1e-2, 5e-3, 5e-4, 5e-5],
+        'lamH', 'H', [-1],
+        'lamW', 'W', [1e-1, 5e-2, 1e-2, 5e-3],
         'lr', '', [1e-2],
 
-        'eval_freq', '', [100],
-        'seed', 's', [0, 1, 2]
+        'eval_freq', '', [10],
+        'seed', 's', [0]
     ]
 
     indexes, actual_setting, total, hyper2logname = get_setting_dt(settings, setting)
@@ -47,11 +47,11 @@ def main():
     """replace values"""
     config = TrainConfig(**actual_setting)
     config.device = DEVICE
-    config.num_eval_batch = 100
+    config.num_eval_batch = 400
 
     config.data_folder = '/NC_regression/dataset/mujoco'
     config.project = 'NC_new'
-    config.group = 'no_bn'
+    config.group = 'bn_case1_explore'
     config.name = '_'.join([v + str(getattr(config, k)) for k, v in hyper2logname.items() if v != ''])
 
     run_BC(config)

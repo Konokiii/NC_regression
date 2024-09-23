@@ -133,11 +133,14 @@ def compute_metrics(metrics, split, device, info=None):
     try:
         pca_for_H.fit(H_np)
     except Exception as e:
-        print(e)
-        for k in range(n_components):
-            result[f'NRC1_pca{k+1}'] = -1
-            result[f'NRC1n_pca{k + 1}'] = -1
-    else:
+        print('Initial PCA failed with error:', e)
+        print('Try PCA with full SVD solver.')
+        pca_for_H = PCA(n_components=n_components, svd_solver='full')
+        pca_for_H.fit(H_np)
+        # for k in range(n_components):
+        #     result[f'NRC1_pca{k+1}'] = -1
+        #     result[f'NRC1n_pca{k + 1}'] = -1
+    finally:
         H_pca = torch.tensor(pca_for_H.components_[:n_components, :], device=device)
         H_U = gram_schmidt(H_pca)
         for k in range(n_components):
@@ -166,9 +169,11 @@ def compute_metrics(metrics, split, device, info=None):
     if info:
         assert isinstance(info, dict), 'Extra info used to compute should be a dictionary.'
         NRC3_target = info['NRC3_target']
+        NRC3n_target = info['NRC3n_target']
 
         # NRC3 with UFM assumption
-        result['NRC3_ufm'] = torch.norm(WWT / torch.norm(WWT) - torch.tensor(NRC3_target, device=device)).item() ** 2
+        result['NRC3n_ufm'] = torch.norm(WWT / torch.norm(WWT) - torch.tensor(NRC3n_target, device=device)).item() ** 2
+        result['NRC3_ufm'] = torch.norm(WWT - torch.tensor(NRC3_target, device=device)).item() ** 2
 
     # NRC2: Project H to span(w1, w2)
     # try:
@@ -577,9 +582,11 @@ def run_BC(config: TrainConfig):
     train_theory_stats, Sigma, Sigma_sqrt = train_dataset.get_theory_stats()
     info = None
     if config.lamH != -1:
-        NRC3_target = Sigma_sqrt - (config.lamH * config.lamW) ** 0.5 * np.eye(Sigma_sqrt.shape[0])
-        NRC3_target = NRC3_target / np.linalg.norm(NRC3_target)
-        info = {'NRC3_target': NRC3_target}
+        # lamW can be zero, so take maximum between it and 1e-10.
+        NRC3_target = (config.lamH / max(config.lamW, 1e-10)) ** 0.5 * (Sigma_sqrt - (config.lamH * config.lamW) ** 0.5 * np.eye(Sigma_sqrt.shape[0]))
+        NRC3n_target = NRC3_target / np.linalg.norm(NRC3_target)
+        info = {'NRC3_target': NRC3_target,
+                'NRC3n_target': NRC3n_target}
 
     train_log = trainer.NC_eval(train_loader, split='train', info=info)
     val_log = trainer.NC_eval(val_loader, split='test', info=info)
