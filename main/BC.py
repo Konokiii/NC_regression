@@ -391,6 +391,11 @@ class Actor(nn.Module):
                 module_list.append(nn.Tanh())
             elif layer == 'G':
                 module_list.append(nn.GELU())
+            elif layer == 'L':
+                module_list.append(nn.LeakyReLU())
+            elif layer == 'BL':
+                module_list.append(nn.BatchNorm1d(in_dim))
+                module_list.append(nn.LeakyReLU())
             elif layer == 'BR':
                 module_list.append(nn.BatchNorm1d(in_dim))
                 module_list.append(nn.ReLU())

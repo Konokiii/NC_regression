@@ -31,7 +31,7 @@ def main():
 
         'optimizer', '', ['sgd'],
         'lamH', 'H', [-1],
-        'lamW', 'W', [1e-1, 5e-2, 1e-2, 5e-3],
+        'lamW', 'W', [5e-1, 3e-1],
         'lr', '', [1e-2],
 
         'eval_freq', '', [10],

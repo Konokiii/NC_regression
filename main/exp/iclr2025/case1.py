@@ -21,12 +21,12 @@ def main():
 
     settings = [
         'env', 'E', ['reacher', 'swimmer', 'hopper'],
-        'mode', '', ['bn'],
+        'mode', '', ['bn_no_relu'],
 
         'max_epochs', 'Eps', [int(1e4)],
         'batch_size', '', [256],
         'data_size', 'DS', [int(1e5)],
-        'arch', '', ['256-BR-256-BR-256-BR|T'],
+        'arch', '', ['256-BR-256-BR-256|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
