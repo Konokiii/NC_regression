@@ -21,12 +21,12 @@ def main():
 
     settings = [
         'env', 'E', ['reacher', 'swimmer', 'hopper'],
-        'mode', '', ['bn_no_relu'],
+        'mode', '', ['bn_no_relu', 'no_relu'],
 
         'max_epochs', 'Eps', [int(1e4)],
         'batch_size', '', [256],
         'data_size', 'DS', [int(1e5)],
-        'arch', '', ['256-BR-256-BR-256|T'],
+        # 'arch', '', ['256-BR-256-BR-256|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
@@ -49,6 +49,10 @@ def main():
     config.device = DEVICE
     config.num_eval_batch = 400
     config.lamH = config.lamW
+    if config.mode == 'bn_no_relu':
+        config.arch = '256-BR-256-BR-256|T'
+    elif config.mode == 'no_relu':
+        config.arch = '256-R-256-R-256|T'
 
     config.data_folder = '/NC_regression/dataset/mujoco'
     config.project = 'NC_new'
