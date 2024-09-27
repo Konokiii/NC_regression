@@ -21,12 +21,12 @@ def main():
 
     settings = [
         'env', 'E', ['hopper'],
-        'mode', 'M', ['null', 'no_relu'],
+        'mode', 'M', ['leaky_relu'],
 
         'max_epochs', 'Eps', [int(2e5)],
         'batch_size', '', [256],
         'data_size', 'DS', [10000],
-        # 'arch', '', ['256-R-256-R-256-R|T'],
+        'arch', '', ['256-R-256-R-256-L|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
@@ -48,14 +48,14 @@ def main():
     config = TrainConfig(**actual_setting)
     config.device = DEVICE
     config.num_eval_batch = 100
-    if config.mode == 'no_relu':
-        config.arch = '256-R-256-R-256|T'
-    elif config.mode == 'null':
-        config.arch = '256-R-256-R-256-R|T'
+    # if config.mode == 'no_relu':
+    #     config.arch = '256-R-256-R-256|T'
+    # elif config.mode == 'null':
+    #     config.arch = '256-R-256-R-256-R|T'
 
-    if config.mode == 'null':  # already done the following exps, so skip
-        if config.lamW <= 1e-3:
-            return
+    # if config.mode == 'null':  # already done the following exps, so skip
+    #     if config.lamW <= 1e-3:
+    #         return
 
     config.data_folder = '/NC_regression/dataset/mujoco'
     config.project = 'NC_new'

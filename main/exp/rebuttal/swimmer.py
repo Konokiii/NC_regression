@@ -21,12 +21,12 @@ def main():
 
     settings = [
         'env', 'E', ['swimmer'],
-        'mode', 'M', ['null'],
+        'mode', 'M', ['leaky_relu'],
 
         'max_epochs', 'Eps', [int(1e6)],
         'batch_size', '', [256],
         'data_size', 'DS', [1000],
-        'arch', '', ['256-R-256-R-256-R|T'],
+        'arch', '', ['256-R-256-R-256-L|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
