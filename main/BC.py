@@ -589,7 +589,9 @@ def run_BC(config: TrainConfig):
     if config.lamH != -1:
         # lamW can be zero, so take maximum between it and 1e-10.
         NRC3_target = (config.lamH / max(config.lamW, 1e-10)) ** 0.5 * (Sigma_sqrt - (config.lamH * config.lamW) ** 0.5 * np.eye(Sigma_sqrt.shape[0]))
-        NRC3n_target = NRC3_target / np.linalg.norm(NRC3_target)
+
+        NRC3n_target = Sigma_sqrt - (config.lamH * config.lamW) ** 0.5 * np.eye(Sigma_sqrt.shape[0])
+        NRC3n_target = NRC3n_target / np.linalg.norm(NRC3n_target)
         info = {'NRC3_target': NRC3_target,
                 'NRC3n_target': NRC3n_target}
 

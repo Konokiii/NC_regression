@@ -21,12 +21,12 @@ def main():
 
     settings = [
         'env', 'E', ['reacher'],
-        'mode', 'M', ['leaky_relu'],
+        'mode', 'M', ['null'],
 
         'max_epochs', 'Eps', [int(1.5e6)],
         'batch_size', '', [256],
         'data_size', 'DS', [1000],
-        'arch', '', ['256-R-256-R-256-L|T'],
+        'arch', '', ['256-R-256-R-256-R|T'],
         'normalize', '', ['none'],
 
         'optimizer', '', ['sgd'],
