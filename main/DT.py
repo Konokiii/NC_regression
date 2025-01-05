@@ -64,6 +64,7 @@ class TrainConfig:
     device: str = "cpu"
     # NRC relate_d
     num_NRC_batches: int = 50
+    action_epsilon: float = 5e-8
     project_folder: str = "$SCRATCH/NC_regression"
 
     # def __post_init__(self):
@@ -138,9 +139,11 @@ def discounted_cumsum(x: np.ndarray, gamma: float) -> np.ndarray:
 
 
 def load_d4rl_trajectories(
-        env_name: str, gamma: float = 1.0
+        env_name: str, gamma: float = 1.0, max_action: float = 1.0, action_epsilon: float = 1e-7
 ) -> Tuple[List[DefaultDict[str, np.ndarray]], Dict[str, Any]]:
     dataset = gym.make(env_name).get_dataset()
+    # Modified: Clip the actions to have absolute value smaller than 1 so no inf appear in arctanh().
+    dataset['actions'] = np.clip(dataset['actions'], a_min=-max_action+action_epsilon, a_max=max_action-action_epsilon)
     traj, traj_len = [], []
 
     data_ = defaultdict(list)
@@ -172,9 +175,14 @@ def load_d4rl_trajectories(
 
 
 class SequenceDataset(IterableDataset):
-    def __init__(self, env_name: str, seq_len: int = 10, reward_scale: float = 1.0):
+    def __init__(self,
+                 env_name: str,
+                 seq_len: int = 10,
+                 reward_scale: float = 1.0,
+                 max_action: float = 1.0,
+                 action_epsilon: float = 1e-7,):
         self.env_name = env_name
-        self.dataset, info = load_d4rl_trajectories(env_name, gamma=1.0)
+        self.dataset, info = load_d4rl_trajectories(env_name, gamma=1.0, max_action=max_action, action_epsilon=action_epsilon)
         self.reward_scale = reward_scale
         self.seq_len = seq_len
 
@@ -230,8 +238,6 @@ class SequenceDataset(IterableDataset):
                                   'max_eigval': eig_vals[-1]}
 
         Y = np.arctanh(Y)
-        if np.isinf(Y).any():
-            raise ValueError("There is inf in the arctanh(Y).")
         Y_mean = Y.mean(axis=1, keepdims=True)
         Y_centered = Y - Y_mean
         Sigma = Y_centered @ Y_centered.T / M
@@ -490,7 +496,11 @@ def train_DT(config: TrainConfig):
 
     # data & dataloader setup
     dataset = SequenceDataset(
-        config.env_name, seq_len=config.seq_len, reward_scale=config.reward_scale
+        config.env_name,
+        seq_len=config.seq_len,
+        reward_scale=config.reward_scale,
+        max_action=config.max_action,
+        action_epsilon=config.action_epsilon
     )
     trainloader = DataLoader(
         dataset,
@@ -563,16 +573,8 @@ def train_DT(config: TrainConfig):
             time_steps=time_steps,
             padding_mask=padding_mask,
         )
-        if torch.isinf(predicted_actions).any():
-            raise ValueError("There is Inf in the predicted_actions.")
-        if torch.isnan(predicted_actions).any():
-            raise ValueError("There is NaN in the predicted_actions.")
 
         arctanh_actions = torch.arctanh(actions.detach())
-        if torch.isinf(arctanh_actions).any():
-            raise ValueError("There is Inf in the arctanh(Y).")
-        if torch.isnan(arctanh_actions).any():
-            raise ValueError("There is NaN in the arctanh(Y).")
 
         loss = F.mse_loss(predicted_actions, arctanh_actions, reduction="none")
         # [batch_size, seq_len, action_dim] * [batch_size, seq_len, 1]

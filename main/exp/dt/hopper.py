@@ -32,7 +32,7 @@ def main():
     config.device = DEVICE
 
     config.project = 'nrc4rl'
-    config.group = 'test'
+    config.group = 'v0'
     config.name = '_'.join([v + str(getattr(config, k)) for k, v in hyper2logname.items() if v != ''])
 
     train_DT(config)
