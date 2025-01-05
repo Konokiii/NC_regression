@@ -563,6 +563,11 @@ def train_DT(config: TrainConfig):
             time_steps=time_steps,
             padding_mask=padding_mask,
         )
+        if torch.isinf(predicted_actions).any():
+            raise ValueError("There is Inf in the predicted_actions.")
+        if torch.isnan(predicted_actions).any():
+            raise ValueError("There is NaN in the predicted_actions.")
+
         arctanh_actions = torch.arctanh(actions.detach())
         if torch.isinf(arctanh_actions).any():
             raise ValueError("There is Inf in the arctanh(Y).")
