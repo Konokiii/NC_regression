@@ -182,6 +182,9 @@ class SequenceDataset(IterableDataset):
                  max_action: float = 1.0,
                  action_epsilon: float = 1e-7,):
         self.env_name = env_name
+        self.max_action = max_action
+        self.action_epsilon = action_epsilon
+
         self.dataset, info = load_d4rl_trajectories(env_name, gamma=1.0, max_action=max_action, action_epsilon=action_epsilon)
         self.reward_scale = reward_scale
         self.seq_len = seq_len
@@ -237,6 +240,7 @@ class SequenceDataset(IterableDataset):
                                   'min_eigval': eig_vals[0],
                                   'max_eigval': eig_vals[-1]}
 
+        Y = np.clip(Y, a_min=-self.max_action+self.action_epsilon, a_max=self.max_action-self.action_epsilon)
         Y = np.arctanh(Y)
         Y_mean = Y.mean(axis=1, keepdims=True)
         Y_centered = Y - Y_mean
