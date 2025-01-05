@@ -65,7 +65,7 @@ class TrainConfig:
     # NRC relate_d
     num_NRC_batches: int = 50
     action_epsilon: float = 5e-8
-    project_folder: str = "$SCRATCH/NC_regression"
+    project_folder: str = "./"
 
     # def __post_init__(self):
     #     self.name = f"{self.name}-{self.env_name}-{str(uuid.uuid4())[:8]}"
@@ -740,7 +740,7 @@ def train_DT(config: TrainConfig):
     )
 
     # Save dataset related theoretical values to local
-    save_folder = os.path.join(config.project_folder, 'results/DT')
+    save_folder = os.path.join(config.project_folder, 'results/dt')
     os.makedirs(save_folder, exist_ok=True)
     save_path = os.path.join(save_folder, config.name + '.json')
 
