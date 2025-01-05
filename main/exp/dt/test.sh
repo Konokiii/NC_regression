@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --verbose
-#SBATCH --time=48:00:00
+#SBATCH --time=01:00:00
 #SBATCH --nodes=1
 #SBATCH --exclude=gm[001-010,013-020],gm[021-023],gm[024-025]
 #SBATCH --mem=16GB
@@ -13,7 +13,7 @@
 
 # #####################################################
 # #SBATCH --gres=gpu:1 # uncomment this line to request a gpu
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=1
 
 sleep $(( (RANDOM%10) + 1 )) # to avoid issues when submitting large amounts of jobs
 
@@ -29,7 +29,7 @@ export PYTHONPATH=$PYTHONPATH:/scratch/zd662/NC_regression
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/zd662/.mujoco/mujoco210/bin:/usr/lib/nvidia
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:$HOME/.conda/envs/otr/include
 export CPATH=$CPATH:$CONDA_PREFIX/include
-python main/exp/dt/hopper.py --setting ${SLURM_ARRAY_TASK_ID}
+python main/exp/dt/test.py --setting ${SLURM_ARRAY_TASK_ID}
 
 #singularity exec --nv -B /scratch/$USER/NC_regression:/NC_regression -B /scratch/$USER/cql-sandbox/opt/conda/lib/python3.8/site-packages/mujoco_py/:/opt/conda/lib/python3.8/site-packages/mujoco_py/ /scratch/$USER/cql-sandbox bash -c "
 #cd /NC_regression

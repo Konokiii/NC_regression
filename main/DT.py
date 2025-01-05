@@ -62,14 +62,14 @@ class TrainConfig:
     train_seed: int = 10
     eval_seed: int = 42
     device: str = "cpu"
-    # NRC related
+    # NRC relate_d
     num_NRC_batches: int = 50
     project_folder: str = "$SCRATCH/NC_regression"
 
-    def __post_init__(self):
-        self.name = f"{self.name}-{self.env_name}-{str(uuid.uuid4())[:8]}"
-        if self.checkpoints_path is not None:
-            self.checkpoints_path = os.path.join(self.checkpoints_path, self.name)
+    # def __post_init__(self):
+    #     self.name = f"{self.name}-{self.env_name}-{str(uuid.uuid4())[:8]}"
+    #     if self.checkpoints_path is not None:
+    #         self.checkpoints_path = os.path.join(self.checkpoints_path, self.name)
 
 
 # general utils
@@ -564,6 +564,11 @@ def train_DT(config: TrainConfig):
             padding_mask=padding_mask,
         )
         arctanh_actions = torch.arctanh(actions.detach())
+        if torch.isinf(arctanh_actions).any():
+            raise ValueError("There is Inf in the arctanh(Y).")
+        if torch.isnan(arctanh_actions).any():
+            raise ValueError("There is NaN in the arctanh(Y).")
+
         loss = F.mse_loss(predicted_actions, arctanh_actions, reduction="none")
         # [batch_size, seq_len, action_dim] * [batch_size, seq_len, 1]
         loss = (loss * mask.unsqueeze(-1)).mean()
