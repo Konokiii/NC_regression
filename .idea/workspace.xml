@@ -5,26 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6dc0f2a-e5ca-49c2-b822-42d4bd36ab9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/BC.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/BC.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/reacher.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/rebuttal/reacher.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/Figure2_2x6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/Figure2_4x3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/Figure2_4x3_short.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/Figure3_1x4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/Figure4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/NRC1-3/reacher_NRC1-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/pdf/Figure2_4x3.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/pdf/Figure3.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/pdf/Figure4.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/figures/pdf/Figure_gamma.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/load_data_from_wandb.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/load_data_from_wandb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/log_alias.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/log_alias.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/plot_learning_curves_latex.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/preprocess_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/preprocess_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/rebuttal_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/rebuttal_plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/table_generator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/DT.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/DT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/dt/hopper.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/dt/hopper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/exp/dt/hopper.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/exp/dt/hopper.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/nrc_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/nrc_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +65,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/konoki/Desktop/NC_regression/main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/konoki/Desktop/NC_regression/main/exp/dt&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -92,18 +77,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/main/exp/dt" />
+      <recent name="$APPLICATION_CONFIG_DIR$/scratches" />
       <recent name="$PROJECT_DIR$/main" />
       <recent name="$PROJECT_DIR$/results/camera_ready/case1/carla2d/WD1e-1" />
       <recent name="$PROJECT_DIR$/results/camera_ready/case1/carla2d/case1/seed2023/WD1e-2" />
-      <recent name="$PROJECT_DIR$/results/camera_ready/case1/carla2d/case1/seed2023/WD5e-2" />
-      <recent name="$PROJECT_DIR$/results/camera_ready/case1/carla2d/case1/seed2021/WD1e-2" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/main" />
       <recent name="$PROJECT_DIR$/results/submission" />
       <recent name="$PROJECT_DIR$/plots" />
       <recent name="$PROJECT_DIR$/results/Carla/carla2d" />
       <recent name="$PROJECT_DIR$/results/reacher/DS500_Mno_relu_WD0.003" />
-      <recent name="$PROJECT_DIR$/figures/action_distribution" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -135,6 +120,8 @@
       <workItem from="1730775706589" duration="599000" />
       <workItem from="1730869897102" duration="1195000" />
       <workItem from="1731830720374" duration="55000" />
+      <workItem from="1735585489447" duration="45704000" />
+      <workItem from="1736062066098" duration="13729000" />
     </task>
     <servers />
   </component>
@@ -159,7 +146,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/NC_regression$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1729675629330" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/NC_regression$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1736786718960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
     <SUITE FILE_PATH="coverage/NC_regression$rebuttal_plot.coverage" NAME="rebuttal_plot Coverage Results" MODIFIED="1730211337920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plots" />
     <SUITE FILE_PATH="coverage/NC_regression$preprocess_data.coverage" NAME="preprocess_data Coverage Results" MODIFIED="1729587161941" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plots" />
     <SUITE FILE_PATH="coverage/NC_regression$load_data_from_wandb.coverage" NAME="load_data_from_wandb Coverage Results" MODIFIED="1729587955266" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plots" />

@@ -21,8 +21,9 @@ def main():
 
     settings = [
         'env', 'E', ['hopper'],
-        'dataset', 'D', ['medium-replay', 'medium', 'medium-expert'],
-        'weight_decay', 'WD', [0, 3e-5, 3e-4, 3e-3, 3e-2, 3e-1],
+        'dataset', 'D', ['medium-replay', 'medium', 'medium-expert', 'expert'],
+        'weight_decay', 'WD', [0, 3e-4, 3e-3, 3e-2, 3e-1, 0.5, 0.7, 1, 1.5, 2],
+        'update_steps', '', [500_000]
     ]
 
     indexes, actual_setting, total, hyper2logname = get_setting_dt(settings, setting)
@@ -32,7 +33,7 @@ def main():
     config.device = DEVICE
 
     config.project = 'nrc4rl'
-    config.group = 'v0'
+    config.group = 'v1'
     config.name = '_'.join([v + str(getattr(config, k)) for k, v in hyper2logname.items() if v != ''])
 
     train_DT(config)

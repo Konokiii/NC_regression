@@ -5,6 +5,7 @@ import os
 import random
 import uuid
 import json
+import pickle
 from collections import defaultdict
 from dataclasses import asdict, dataclass
 from typing import Any, DefaultDict, Dict, List, Optional, Tuple, Union
@@ -143,7 +144,8 @@ def load_d4rl_trajectories(
 ) -> Tuple[List[DefaultDict[str, np.ndarray]], Dict[str, Any]]:
     dataset = gym.make(env_name).get_dataset()
     # Modified: Clip the actions to have absolute value smaller than 1 so no inf appear in arctanh().
-    dataset['actions'] = np.clip(dataset['actions'], a_min=-max_action+action_epsilon, a_max=max_action-action_epsilon)
+    dataset['actions'] = np.clip(dataset['actions'], a_min=-max_action + action_epsilon,
+                                 a_max=max_action - action_epsilon)
     traj, traj_len = [], []
 
     data_ = defaultdict(list)
@@ -180,12 +182,13 @@ class SequenceDataset(IterableDataset):
                  seq_len: int = 10,
                  reward_scale: float = 1.0,
                  max_action: float = 1.0,
-                 action_epsilon: float = 1e-7,):
+                 action_epsilon: float = 1e-7, ):
         self.env_name = env_name
         self.max_action = max_action
         self.action_epsilon = action_epsilon
 
-        self.dataset, info = load_d4rl_trajectories(env_name, gamma=1.0, max_action=max_action, action_epsilon=action_epsilon)
+        self.dataset, info = load_d4rl_trajectories(env_name, gamma=1.0, max_action=max_action,
+                                                    action_epsilon=action_epsilon)
         self.reward_scale = reward_scale
         self.seq_len = seq_len
 
@@ -240,7 +243,7 @@ class SequenceDataset(IterableDataset):
                                   'min_eigval': eig_vals[0],
                                   'max_eigval': eig_vals[-1]}
 
-        Y = np.clip(Y, a_min=-self.max_action+self.action_epsilon, a_max=self.max_action-self.action_epsilon)
+        Y = np.clip(Y, a_min=-self.max_action + self.action_epsilon, a_max=self.max_action - self.action_epsilon)
         Y = np.arctanh(Y)
         Y_mean = Y.mean(axis=1, keepdims=True)
         Y_centered = Y - Y_mean
@@ -536,6 +539,24 @@ def train_DT(config: TrainConfig):
         max_action=config.max_action,
     ).to(config.device)
 
+    # Check for existing trained model and load if present
+    model_save_folder = os.path.join(config.project_folder, 'models')
+    os.makedirs(model_save_folder, exist_ok=True)
+    # model_save_name = "%s_%s_WD%s" % (config.env,
+    #                                   config.dataset,
+    #                                   config.weight_decay,
+    #                                   )
+    model_save_path = os.path.join(model_save_folder, f"{config.name}_checkpoint.pt")
+
+    start_step = 0
+    if os.path.exists(model_save_path):
+        checkpoint = torch.load(model_save_path)
+        model.load_state_dict(checkpoint["model_state"])
+        start_step = checkpoint["step"]
+        print(f"Resumed training from step {start_step}")
+    if start_step >= config.update_steps:
+        raise ValueError("Total number of updates is smaller than 'start_step'.")
+
     optim = torch.optim.AdamW(
         model.parameters(),
         lr=config.learning_rate,
@@ -557,13 +578,16 @@ def train_DT(config: TrainConfig):
     wandb_init(asdict(config))
 
     print(f"Total parameters: {sum(p.numel() for p in model.parameters())}")
+
+    # Prepare logging for NRC/training metrics
     all_WWT = []
     W = model.action_head.weight.detach().clone().cpu().numpy()
     WWT = W @ W.T
     all_WWT.append(WWT.reshape(1, -1))
+    all_metrics = {}
 
     trainloader_iter = iter(trainloader)
-    for step in trange(config.update_steps, desc="Training"):
+    for step in trange(start_step, config.update_steps, desc="Training"):
         batch = next(trainloader_iter)
         states, actions, returns, time_steps, mask = [b.to(config.device) for b in batch]
         # True value indicates that the corresponding key value will be ignored
@@ -621,8 +645,7 @@ def train_DT(config: TrainConfig):
                 normalized_scores = (
                         eval_env.get_normalized_score(np.array(eval_returns)) * 100
                 )
-                wandb.log(
-                    {
+                rl_log = {
                         f"eval/{target_return}_return_mean": np.mean(eval_returns),
                         f"eval/{target_return}_return_std": np.std(eval_returns),
                         f"eval/{target_return}_normalized_score_mean": np.mean(
@@ -631,9 +654,8 @@ def train_DT(config: TrainConfig):
                         f"eval/{target_return}_normalized_score_std": np.std(
                             normalized_scores
                         ),
-                    },
-                    step=step,
-                )
+                    }
+                wandb.log(rl_log, step=step)
 
             # **********************************************
             # ****************NRC Evaluation****************
@@ -672,7 +694,10 @@ def train_DT(config: TrainConfig):
                        }
                 nrc_log = compute_metrics(res, config.device, info=None)
 
-                wandb.log({"NRC/"+k: v for k, v in nrc_log.items()}, step=step)
+                wandb.log({"NRC/" + k: v for k, v in nrc_log.items()}, step=step)
+
+                all_metrics[str(step)] = nrc_log
+                all_metrics[str(step)].update(rl_log)
 
                 W = model.action_head.weight.detach().clone().cpu().numpy()
                 WWT = W @ W.T
@@ -739,10 +764,23 @@ def train_DT(config: TrainConfig):
         }
     )
 
+    # Load metrics if resuming
+    metrics_save_folder = os.path.join(config.project_folder, 'metrics')
+    os.makedirs(metrics_save_folder, exist_ok=True)
+    metrics_save_path = os.path.join(metrics_save_folder, f"{config.name}_metrics.pkl")
+
+    exist_metrics = {}
+    if os.path.exists(metrics_save_path):
+        with open(metrics_save_path, "rb") as f:
+            exist_metrics = pickle.load(f)
+    exist_metrics.update(all_metrics)
+    with open(metrics_save_path, "wb") as f:
+        pickle.dump(exist_metrics, f)
+
     # Save dataset related theoretical values to local
-    save_folder = os.path.join(config.project_folder, 'results/dt')
-    os.makedirs(save_folder, exist_ok=True)
-    save_path = os.path.join(save_folder, config.name + '.json')
+    dataset_save_folder = os.path.join(config.project_folder, 'results/dt')
+    os.makedirs(dataset_save_folder, exist_ok=True)
+    dataset_save_path = os.path.join(dataset_save_folder, config.name + '.json')
 
     readable_original = {
         key: (value.tolist() if isinstance(value, np.ndarray) else value)
@@ -753,9 +791,17 @@ def train_DT(config: TrainConfig):
         for key, value in modified_theory_values.items()
     }
 
-    with open(save_path, 'w') as f:
+    with open(dataset_save_path, 'w') as f:
         json.dump(readable_original, f, indent=4)
         json.dump(readable_modified, f, indent=4)
+
+    checkpoint = {
+        "model_state": model.state_dict(),
+        "step": config.update_steps,
+        "config": asdict(config),
+    }
+    torch.save(checkpoint, model_save_path)
+    print(f"Model checkpoint saved at {model_save_path}")
 
 
 if __name__ == "__main__":

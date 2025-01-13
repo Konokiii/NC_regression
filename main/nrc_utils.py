@@ -63,7 +63,7 @@ def compute_metrics(data, device, info=None):
 
     # NRC1 & explained variance ratio
     H_np = H.cpu().numpy()
-    n_components = max(y_dim, 5)
+    n_components = max(y_dim, 15)
     pca_for_H = PCA(n_components=n_components)
     try:
         pca_for_H.fit(H_np)
