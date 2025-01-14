@@ -30,6 +30,7 @@ class TrainConfig:
     project: str = "nrc4rl"
     group: str = "DT"
     name: str = "DT"
+    task_id: int = 0
     # model params
     embedding_dim: int = 128
     num_layers: int = 3
@@ -764,7 +765,7 @@ def train_DT(config: TrainConfig):
         }
     )
 
-    # Load metrics if resuming
+    # Save all results to local
     metrics_save_folder = os.path.join(config.project_folder, 'metrics')
     os.makedirs(metrics_save_folder, exist_ok=True)
     metrics_save_path = os.path.join(metrics_save_folder, f"{config.name}_metrics.pkl")
@@ -795,6 +796,7 @@ def train_DT(config: TrainConfig):
         json.dump(readable_original, f, indent=4)
         json.dump(readable_modified, f, indent=4)
 
+    # Save trained model to local
     checkpoint = {
         "model_state": model.state_dict(),
         "step": config.update_steps,

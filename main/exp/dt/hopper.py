@@ -23,7 +23,7 @@ def main():
         'env', 'E', ['hopper'],
         'dataset', 'D', ['medium-replay', 'medium', 'medium-expert', 'expert'],
         'weight_decay', 'WD', [0, 3e-4, 3e-3, 3e-2, 3e-1, 0.5, 0.7, 1, 1.5, 2],
-        'update_steps', '', [500_000]
+        'update_steps', '', [2_000_000]
     ]
 
     indexes, actual_setting, total, hyper2logname = get_setting_dt(settings, setting)
@@ -31,6 +31,7 @@ def main():
     """replace values"""
     config = TrainConfig(**actual_setting)
     config.device = DEVICE
+    config.task_id = args.setting
 
     config.project = 'nrc4rl'
     config.group = 'v1'
