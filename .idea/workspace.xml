@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6dc0f2a-e5ca-49c2-b822-42d4bd36ab9b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/main/exp/dt/adroit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/exp/dt/adroit.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/DT.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/DT.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +56,10 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.evr_bar_chart.executor&quot;: &quot;Run&quot;,
     &quot;Python.load_data_from_wandb.executor&quot;: &quot;Run&quot;,
     &quot;Python.preprocess_data.executor&quot;: &quot;Run&quot;,
+    &quot;Python.print_exps.executor&quot;: &quot;Run&quot;,
     &quot;Python.rebuttal_plot.executor&quot;: &quot;Run&quot;,
     &quot;Python.scratch.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -118,7 +121,10 @@
       <workItem from="1730869897102" duration="1195000" />
       <workItem from="1731830720374" duration="55000" />
       <workItem from="1735585489447" duration="45704000" />
-      <workItem from="1736062066098" duration="16052000" />
+      <workItem from="1736062066098" duration="24603000" />
+      <workItem from="1737283660831" duration="17686000" />
+      <workItem from="1737625201529" duration="1519000" />
+      <workItem from="1738079593826" duration="1003000" />
     </task>
     <servers />
   </component>
@@ -144,6 +150,8 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NC_regression$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1736786718960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/NC_regression$print_exps.coverage" NAME="print_exps Coverage Results" MODIFIED="1736875253213" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main/exp/dt" />
+    <SUITE FILE_PATH="coverage/NC_regression$evr_bar_chart.coverage" NAME="evr_bar_chart Coverage Results" MODIFIED="1737524580947" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plots/dt" />
     <SUITE FILE_PATH="coverage/NC_regression$rebuttal_plot.coverage" NAME="rebuttal_plot Coverage Results" MODIFIED="1730211337920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plots" />
     <SUITE FILE_PATH="coverage/NC_regression$preprocess_data.coverage" NAME="preprocess_data Coverage Results" MODIFIED="1729587161941" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plots" />
     <SUITE FILE_PATH="coverage/NC_regression$load_data_from_wandb.coverage" NAME="load_data_from_wandb Coverage Results" MODIFIED="1729587955266" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/plots" />

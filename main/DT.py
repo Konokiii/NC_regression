@@ -499,7 +499,12 @@ def eval_rollout(
 
 # @pyrallis.wrap()
 def train_DT(config: TrainConfig):
-    config.env_name = f"{config.env}-{config.dataset}-v2"
+    config.env_name = f"{config.env}-{config.dataset}"
+    if config.env in ['hopper', 'walker2d', 'halfcheetah', 'ant']:
+        config.env_name += '-v2'
+    elif config.env in ['pen', 'hammer', 'door', 'relocate']:
+        config.env_name += '-v1'
+
     set_seed(config.train_seed, deterministic_torch=config.deterministic_torch)
 
     # data & dataloader setup
