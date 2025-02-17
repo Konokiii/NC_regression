@@ -145,8 +145,8 @@ def load_d4rl_trajectories(
         env_name: str, gamma: float = 1.0, max_action: float = 1.0, action_epsilon: float = 1e-7, data_ratio: float = 1.0
 ) -> Tuple[List[DefaultDict[str, np.ndarray]], Dict[str, Any]]:
     dataset = gym.make(env_name).get_dataset()
-    use_size = dataset['observations'].shape[0] * data_ratio
-    dataset = {k: v[:use_size,] for k, v in dataset.items()}
+    use_size = int(dataset['observations'].shape[0] * data_ratio)
+    dataset = {k: v[:use_size] for k, v in dataset.items() if isinstance(v, np.ndarray)}
 
     # Modified: Clip the actions to have absolute value smaller than 1 so no inf appear in arctanh().
     dataset['actions'] = np.clip(dataset['actions'], a_min=-max_action + action_epsilon,
