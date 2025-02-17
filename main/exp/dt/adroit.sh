@@ -16,6 +16,7 @@
 #SBATCH --cpus-per-task=12
 
 sleep $(( (RANDOM%10) + 1 )) # to avoid issues when submitting large amounts of jobs
+#sleep $(($SLURM_ARRAY_TASK_ID * 5))
 
 echo "SLURM_JOBID: " $SLURM_JOBID
 echo "SLURM_ARRAY_JOB_ID: " $SLURM_ARRAY_JOB_ID

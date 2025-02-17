@@ -44,6 +44,7 @@ class TrainConfig:
     # training params
     env: str = "hopper"
     dataset: str = 'medium'
+    data_ratio: float = 1.0
     # env_name: str = "hopper-medium-v2"
     learning_rate: float = 1e-4
     betas: Tuple[float, float] = (0.9, 0.999)
@@ -141,9 +142,12 @@ def discounted_cumsum(x: np.ndarray, gamma: float) -> np.ndarray:
 
 
 def load_d4rl_trajectories(
-        env_name: str, gamma: float = 1.0, max_action: float = 1.0, action_epsilon: float = 1e-7
+        env_name: str, gamma: float = 1.0, max_action: float = 1.0, action_epsilon: float = 1e-7, data_ratio: float = 1.0
 ) -> Tuple[List[DefaultDict[str, np.ndarray]], Dict[str, Any]]:
     dataset = gym.make(env_name).get_dataset()
+    use_size = dataset['observations'].shape[0] * data_ratio
+    dataset = {k: v[:use_size,] for k, v in dataset.items()}
+
     # Modified: Clip the actions to have absolute value smaller than 1 so no inf appear in arctanh().
     dataset['actions'] = np.clip(dataset['actions'], a_min=-max_action + action_epsilon,
                                  a_max=max_action - action_epsilon)
@@ -183,13 +187,14 @@ class SequenceDataset(IterableDataset):
                  seq_len: int = 10,
                  reward_scale: float = 1.0,
                  max_action: float = 1.0,
-                 action_epsilon: float = 1e-7, ):
+                 action_epsilon: float = 1e-7,
+                 data_ratio: float = 1.0):
         self.env_name = env_name
         self.max_action = max_action
         self.action_epsilon = action_epsilon
 
         self.dataset, info = load_d4rl_trajectories(env_name, gamma=1.0, max_action=max_action,
-                                                    action_epsilon=action_epsilon)
+                                                    action_epsilon=action_epsilon, data_ratio=data_ratio)
         self.reward_scale = reward_scale
         self.seq_len = seq_len
 
@@ -513,7 +518,8 @@ def train_DT(config: TrainConfig):
         seq_len=config.seq_len,
         reward_scale=config.reward_scale,
         max_action=config.max_action,
-        action_epsilon=config.action_epsilon
+        action_epsilon=config.action_epsilon,
+        data_ratio=config.data_ratio
     )
     trainloader = DataLoader(
         dataset,
