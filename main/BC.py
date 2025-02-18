@@ -35,9 +35,9 @@ class TrainConfig:
     data_size: int = 1000  # Number of samples to use
     normalize: str = 'none'  # Choose from 'none', 'normal', 'standard', 'center'
 
-    arch: str = '256-R-256-R|T'  # Actor architecture
+    arch: str = '256-R-256-R-256-R|T'  # Actor architecture
     optimizer: str = 'sgd'
-    lamH: float = 1e-5  # If it is -1, then the model is not UFM.
+    lamH: float = -1  # If it is -1, then the model is not UFM.
     lamW: float = 5e-2
     lr: float = 1e-2
 
@@ -55,6 +55,18 @@ class TrainConfig:
         self.name = f"{self.name}-{self.env}-{str(uuid.uuid4())[:8]}"
         if self.checkpoints_path is not None:
             self.checkpoints_path = os.path.join(self.checkpoints_path, self.name)
+
+
+# Save model
+def save_model(save_name, model, config):
+    save_folder = os.path.join(config.project_folder, f'models/{config.env}')
+    os.makedirs(save_folder, exist_ok=True)
+    save_path = os.path.join(save_folder, save_name + '.pt')
+    checkpoint = {
+        "model_state": model.state_dict(),
+        "config": asdict(config),
+    }
+    torch.save(checkpoint, save_path)
 
 
 def cosine_similarity_gpu(a, b):
@@ -548,14 +560,17 @@ def run_BC(config: TrainConfig):
 
     state_dim = train_dataset.get_state_dim()
     action_dim = train_dataset.get_action_dim()
-    if config.saved_model is not None:
-        load_model_path = os.path.join(config.project_folder, f'models/{config.env}/{config.saved_model}.pth')
-        if os.path.exists(load_model_path):
-            actor = torch.load(load_model_path).to(config.device)
-        else:
-            raise FileNotFoundError('Try to load pretrained model, but file not found.')
-    else:
-        actor = Actor(state_dim, action_dim, arch=config.arch).to(config.device)
+
+    # if config.saved_model is not None:
+    #     load_model_path = os.path.join(config.project_folder, f'models/{config.env}/{config.saved_model}.pth')
+    #     if os.path.exists(load_model_path):
+    #         actor = torch.load(load_model_path).to(config.device)
+    #     else:
+    #         raise FileNotFoundError('Try to load pretrained model, but file not found.')
+
+    actor = Actor(state_dim, action_dim, arch=config.arch).to(config.device)
+    # Save the initial model
+    save_model(save_name=config.name+'_ep0', model=actor, config=config)
 
     actor_optimizer = {'adam': torch.optim.Adam,
                        'sgd': torch.optim.SGD}[config.optimizer](actor.parameters(), lr=config.lr)
@@ -606,6 +621,7 @@ def run_BC(config: TrainConfig):
     W = actor.W.weight.detach().clone().cpu().numpy()
     WWT = W @ W.T
     all_WWT.append(WWT.reshape(1, -1))
+
     for epoch in range(config.max_epochs):
         epoch_train_loss = 0
         count = 0
@@ -638,8 +654,9 @@ def run_BC(config: TrainConfig):
                                 'min_eigval': train_theory_stats['min_eigval']}
                 pickle.dump(to_plot_nrc3, file)
 
-    if config.lamH != -1:
-        return
+        if (epoch + 1) in list(range(0, config.max_epochs+1, config.max_epochs // 10)):
+            # Save the initial model
+            save_model(save_name=config.name + f'_ep{epoch+1}', model=actor, config=config)
 
     # NRC3
     W = actor.W.weight.detach().clone().cpu().numpy()
@@ -700,10 +717,4 @@ def run_BC(config: TrainConfig):
             )
         }
     )
-
-    # Save model
-    save_folder = os.path.join(config.project_folder, f'models/{config.env}')
-    os.makedirs(save_folder, exist_ok=True)
-    save_path = os.path.join(save_folder, config.name + '.pth')
-    torch.save(actor, save_path)
 
