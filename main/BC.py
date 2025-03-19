@@ -643,18 +643,18 @@ def run_BC(config: TrainConfig):
                        'C': train_theory_stats,
                        })
 
-        if (epoch + 1) in [config.max_epochs // (i+1) for i in range(4)]:
-            # Save NRC3 related data to local for later plots
-            save_folder = os.path.join(config.project_folder, 'results/wwt')
-            os.makedirs(save_folder, exist_ok=True)
-            save_path = os.path.join(save_folder, config.name + '.pkl')
-            with open(save_path, 'wb') as file:
-                to_plot_nrc3 = {'WWT': np.concatenate(all_WWT, axis=0),
-                                'Sigma_sqrt': Sigma_sqrt,
-                                'min_eigval': train_theory_stats['min_eigval']}
-                pickle.dump(to_plot_nrc3, file)
+        # if (epoch + 1) in [config.max_epochs // (i+1) for i in range(4)]:
+        #     # Save NRC3 related data to local for later plots
+        #     save_folder = os.path.join(config.project_folder, 'results/wwt')
+        #     os.makedirs(save_folder, exist_ok=True)
+        #     save_path = os.path.join(save_folder, config.name + '.pkl')
+        #     with open(save_path, 'wb') as file:
+        #         to_plot_nrc3 = {'WWT': np.concatenate(all_WWT, axis=0),
+        #                         'Sigma_sqrt': Sigma_sqrt,
+        #                         'min_eigval': train_theory_stats['min_eigval']}
+        #         pickle.dump(to_plot_nrc3, file)
 
-        if (epoch + 1) in list(range(0, config.max_epochs+1, config.max_epochs // 10)):
+        if (epoch + 1) in list(range(0, config.max_epochs+1, config.max_epochs // 100)):
             # Save the initial model
             save_model(save_name=config.name + f'_ep{epoch+1}', model=actor, config=config)
 
@@ -664,15 +664,15 @@ def run_BC(config: TrainConfig):
     all_WWT.append(WWT.reshape(1, -1))
     all_WWT = np.concatenate(all_WWT, axis=0)
 
-    # Save NRC3 related data to local for later plots
-    save_folder = os.path.join(config.project_folder, 'results/wwt')
-    os.makedirs(save_folder, exist_ok=True)
-    save_path = os.path.join(save_folder, config.name + '.pkl')
-    with open(save_path, 'wb') as file:
-        to_plot_nrc3 = {'WWT': all_WWT,
-                        'Sigma_sqrt': Sigma_sqrt,
-                        'min_eigval': train_theory_stats['min_eigval']}
-        pickle.dump(to_plot_nrc3, file)
+    # # Save NRC3 related data to local for later plots
+    # save_folder = os.path.join(config.project_folder, 'results/wwt')
+    # os.makedirs(save_folder, exist_ok=True)
+    # save_path = os.path.join(save_folder, config.name + '.pkl')
+    # with open(save_path, 'wb') as file:
+    #     to_plot_nrc3 = {'WWT': all_WWT,
+    #                     'Sigma_sqrt': Sigma_sqrt,
+    #                     'min_eigval': train_theory_stats['min_eigval']}
+    #     pickle.dump(to_plot_nrc3, file)
 
     # Log NRC3 related curves to wandb
     WWT_normalized = WWT / np.linalg.norm(WWT)

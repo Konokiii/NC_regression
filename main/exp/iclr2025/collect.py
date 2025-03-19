@@ -1,10 +1,8 @@
 import os
 import torch
-import pyrallis
 import argparse
 
 from main.BC import TrainConfig, run_BC
-from main.exp.dt.print_exps import hyper2logname
 from main.utils import get_setting_dt
 
 CUDA_AVAILABLE = torch.cuda.is_available()
@@ -22,25 +20,61 @@ def main():
 
     settings = [
         {'env': 'reacher',
-         'max_epochs': int(1.5e6),
-         'data_size': 1000,
+         'max_epochs': int(2e5),
+         'data_size': int(1e4),
          'lamW': 1.5e-3,
-         'eval_freq': 1.5e4
+         'eval_freq': int(1e3)
+         },
+        {'env': 'reacher',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 1.5e-3,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'reacher',
+         'max_epochs': int(2e5),
+         'data_size': int(5e4),
+         'lamW': 1.5e-3,
+         'eval_freq': int(1e3)
          },
 
         {'env': 'swimmer',
          'max_epochs': int(2e5),
-         'data_size': 1000,
+         'data_size': int(1e4),
          'lamW': 1e-2,
-         'eval_freq': 2e3
+         'eval_freq': int(1e3)
+         },
+        {'env': 'swimmer',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 1e-2,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'swimmer',
+         'max_epochs': int(2e5),
+         'data_size': int(5e4),
+         'lamW': 1e-2,
+         'eval_freq': int(1e3)
          },
 
         {'env': 'hopper',
-         'max_epochs': int(2e4),
-         'data_size': 10000,
+         'max_epochs': int(2e5),
+         'data_size': int(1e4),
          'lamW': 1e-2,
-         'eval_freq': 2e2
-         }
+         'eval_freq': int(1e3)
+         },
+        {'env': 'hopper',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 1e-2,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'hopper',
+         'max_epochs': int(2e5),
+         'data_size': int(5e4),
+         'lamW': 1e-2,
+         'eval_freq': int(1e3)
+         },
     ]
 
     # indexes, actual_setting, total, hyper2logname = get_setting_dt(settings, setting)
@@ -53,7 +87,8 @@ def main():
     config = TrainConfig(**settings[setting])
     config.device = DEVICE
 
-    config.data_folder = '/NC_regression/dataset/mujoco'
+    config.data_folder = './dataset'
+    config.project_folder = './'
     config.project = 'NC_new'
     config.group = 'data_collection'
 
