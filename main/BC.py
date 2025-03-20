@@ -63,7 +63,7 @@ def save_model(save_name, model, config):
     os.makedirs(save_folder, exist_ok=True)
     save_path = os.path.join(save_folder, save_name + '.pt')
     checkpoint = {
-        "model_state": model.state_dict(),
+        "model_state": model.cpu().state_dict(),
         "config": asdict(config),
     }
     torch.save(checkpoint, save_path)
@@ -307,6 +307,9 @@ class MujocoBuffer(Dataset):
 
         print(f"Dataset size: {self.size}; State Dim: {self.state_dim}; Action_Dim: {self.action_dim}.")
 
+        self.states = self._to_tensor(self.states)
+        self.actions = self._to_tensor(self.actions)
+
     def get_state_dim(self):
         return self.state_dim
 
@@ -314,7 +317,8 @@ class MujocoBuffer(Dataset):
         return self.action_dim
 
     def get_theory_stats(self):
-        Y = self.actions.T
+        # Y = self.actions.T
+        Y = self.actions.cpu().numpy()
         y_dim = Y.shape[0]
         Y_mean = Y.mean(axis=1, keepdims=True)
         Y = Y - Y_mean
@@ -378,12 +382,15 @@ class MujocoBuffer(Dataset):
         return self.size
 
     def __getitem__(self, idx):
-        states = self.states[idx]
-        actions = self.actions[idx]
-        return {
-            'states': self._to_tensor(states),
-            'actions': self._to_tensor(actions)
-        }
+        return {'states': self.states[idx],
+                'actions': self.actions[idx]}
+
+        # states = self.states[idx]
+        # actions = self.actions[idx]
+        # return {
+        #     'states': self._to_tensor(states),
+        #     'actions': self._to_tensor(actions)
+        # }
 
 
 class Actor(nn.Module):

@@ -86,11 +86,13 @@ def main():
     """replace values"""
     config = TrainConfig(**settings[setting])
     config.device = DEVICE
+    config.batch_size = 256
+    config.max_epochs = int(1e4)
 
     config.data_folder = './dataset'
     config.project_folder = './'
     config.project = 'NC_new'
-    config.group = 'data_collection'
+    config.group = 'test'
 
     hyper2logname = {'env': 'E',
                      'max_epochs': 'MaxEp',
