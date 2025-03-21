@@ -94,6 +94,38 @@ def gram_schmidt(W):
     return U
 
 
+def compute_NRC1(features, target_dim, result_dict):
+    H = features
+    H_normalized = H / (torch.norm(H, dim=1, keepdim=True) + 1e-8)
+    n_components = max(target_dim, 5)
+
+    # Center the data
+    H_mean = H.mean(dim=0, keepdim=True)
+    H_centered = H - H_mean
+
+    U, S, Vh = torch.linalg.svd(H_centered, full_matrices=False)
+
+    # Explained variance ratio
+    explained_variance = (S ** 2) / (H_centered.shape[0] - 1)
+    total_variance = explained_variance.sum()
+    explained_variance_ratio = explained_variance / total_variance
+
+    H_pca = Vh[:n_components, :]
+    H_U = gram_schmidt(H_pca)
+
+    for k in range(n_components):
+        result_dict[f'EVR{k + 1}'] = explained_variance_ratio[k].item()
+        H_P = torch.mm(H_U[:k + 1, :].T, H_U[:k + 1, :])
+        H_proj_PCA = torch.mm(H, H_P)
+        result_dict[f'NRC1_pca{k + 1}'] = torch.norm(H_proj_PCA - H).item() ** 2 / H.shape[0]
+
+        H_proj_PCA_normalized = torch.mm(H_normalized, H_P)
+        result_dict[f'NRC1n_pca{k + 1}'] = torch.norm(H_proj_PCA_normalized - H_normalized).item() ** 2 / H.shape[0]
+
+    result_dict['NRC1'] = result_dict[f'NRC1_pca{target_dim}']
+    result_dict['NRC1n'] = result_dict[f'NRC1n_pca{target_dim}']
+
+
 def compute_metrics(metrics, split, device, info=None):
     result = {}
     y = metrics['targets']  # (B,2)
@@ -139,35 +171,36 @@ def compute_metrics(metrics, split, device, info=None):
     result['WWT_norm'] = torch.norm(WWT).item()
 
     # NRC1 & explained variance ratio
-    H_np = H.cpu().numpy()
-    n_components = max(y_dim, 5)
-    pca_for_H = PCA(n_components=n_components)
-    try:
-        pca_for_H.fit(H_np)
-    except Exception as e:
-        print('Initial PCA failed with error:', e)
-        print('Try PCA with full SVD solver.')
-        pca_for_H = PCA(n_components=n_components, svd_solver='full')
-        pca_for_H.fit(H_np)
-        # for k in range(n_components):
-        #     result[f'NRC1_pca{k+1}'] = -1
-        #     result[f'NRC1n_pca{k + 1}'] = -1
-    finally:
-        H_pca = torch.tensor(pca_for_H.components_[:n_components, :], device=device)
-        H_U = gram_schmidt(H_pca)
-        for k in range(n_components):
-            result[f'EVR{k+1}'] = pca_for_H.explained_variance_ratio_[k]
-
-            H_P = torch.mm(H_U[:k+1, :].T, H_U[:k+1, :])
-            H_proj_PCA = torch.mm(H, H_P)
-            result[f'NRC1_pca{k + 1}'] = torch.norm(H_proj_PCA - H).item() ** 2 / B
-
-            H_proj_PCA_normalized = torch.mm(H_normalized, H_P)
-            result[f'NRC1n_pca{k + 1}'] = torch.norm(H_proj_PCA_normalized - H_normalized).item() ** 2 / B
-    del H_pca, H_U, H_P, H_proj_PCA, H_proj_PCA_normalized, pca_for_H, H_np
-
-    result['NRC1'] = result[f'NRC1_pca{y_dim}']
-    result['NRC1n'] = result[f'NRC1n_pca{y_dim}']
+    compute_NRC1(H, y_dim, result)
+    # H_np = H.cpu().numpy()
+    # n_components = max(y_dim, 5)
+    # pca_for_H = PCA(n_components=n_components)
+    # try:
+    #     pca_for_H.fit(H_np)
+    # except Exception as e:
+    #     print('Initial PCA failed with error:', e)
+    #     print('Try PCA with full SVD solver.')
+    #     pca_for_H = PCA(n_components=n_components, svd_solver='full')
+    #     pca_for_H.fit(H_np)
+    #     # for k in range(n_components):
+    #     #     result[f'NRC1_pca{k+1}'] = -1
+    #     #     result[f'NRC1n_pca{k + 1}'] = -1
+    # finally:
+    #     H_pca = torch.tensor(pca_for_H.components_[:n_components, :], device=device)
+    #     H_U = gram_schmidt(H_pca)
+    #     for k in range(n_components):
+    #         result[f'EVR{k+1}'] = pca_for_H.explained_variance_ratio_[k]
+    #
+    #         H_P = torch.mm(H_U[:k+1, :].T, H_U[:k+1, :])
+    #         H_proj_PCA = torch.mm(H, H_P)
+    #         result[f'NRC1_pca{k + 1}'] = torch.norm(H_proj_PCA - H).item() ** 2 / B
+    #
+    #         H_proj_PCA_normalized = torch.mm(H_normalized, H_P)
+    #         result[f'NRC1n_pca{k + 1}'] = torch.norm(H_proj_PCA_normalized - H_normalized).item() ** 2 / B
+    # del H_pca, H_U, H_P, H_proj_PCA, H_proj_PCA_normalized, pca_for_H, H_np
+    #
+    # result['NRC1'] = result[f'NRC1_pca{y_dim}']
+    # result['NRC1n'] = result[f'NRC1n_pca{y_dim}']
 
     # NRC2 with Gram-Schmidt
     U = gram_schmidt(W)
@@ -317,29 +350,37 @@ class MujocoBuffer(Dataset):
         return self.action_dim
 
     def get_theory_stats(self):
-        # Y = self.actions.T
-        Y = self.actions.cpu().numpy()
+        Y = self.actions.T
         y_dim = Y.shape[0]
-        Y_mean = Y.mean(axis=1, keepdims=True)
+
+        Y_mean = Y.mean(dim=1, keepdim=True)
         Y = Y - Y_mean
         M = Y.shape[1]
         Sigma = Y @ Y.T / M
 
-        # Sigma_sqrt = sqrtm(Sigma)
-        # eig_vals = np.linalg.eigvalsh(Sigma)
-        eig_vals, eig_vecs = np.linalg.eigh(Sigma)
-        sqrt_eig_vals = np.sqrt(eig_vals)
-        Sigma_sqrt = eig_vecs.dot(np.diag(sqrt_eig_vals)).dot(np.linalg.inv(eig_vecs))
+        # Eigen decomposition (for symmetric matrix, use symeig or eigh)
+        eig_vals, eig_vecs = torch.linalg.eigh(Sigma)
+        sqrt_eig_vals = torch.sqrt(eig_vals)
+        Sigma_sqrt = eig_vecs @ torch.diag(sqrt_eig_vals) @ torch.linalg.inv(eig_vecs)
 
         min_eigval = eig_vals[0]
         max_eigval = eig_vals[-1]
 
-        # mu11 = Sigma[0, 0]
-        # mu12 = Sigma[0, 1]
-        # mu22 = Sigma[1, 1]
-        # sqrt = np.sqrt((mu22 - mu11) ** 2 + 4 * mu12 ** 2)
-        # gamma1 = (mu22 - mu11 + sqrt) / (2 * mu12)
-        # gamma2 = (mu22 - mu11 - sqrt) / (2 * mu12)
+        # Y = self.actions.T
+        # y_dim = Y.shape[0]
+        # Y_mean = Y.mean(axis=1, keepdims=True)
+        # Y = Y - Y_mean
+        # M = Y.shape[1]
+        # Sigma = Y @ Y.T / M
+        #
+        # # Sigma_sqrt = sqrtm(Sigma)
+        # # eig_vals = np.linalg.eigvalsh(Sigma)
+        # eig_vals, eig_vecs = np.linalg.eigh(Sigma)
+        # sqrt_eig_vals = np.sqrt(eig_vals)
+        # Sigma_sqrt = eig_vecs.dot(np.diag(sqrt_eig_vals)).dot(np.linalg.inv(eig_vecs))
+        #
+        # min_eigval = eig_vals[0]
+        # max_eigval = eig_vals[-1]
 
         if y_dim == 2:
             return {
