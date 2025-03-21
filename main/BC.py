@@ -256,14 +256,14 @@ class MujocoBuffer(Dataset):
             normalize: str,
             device: str = "cpu",
     ):
+        self.device = device
+
         self.size = 0
         self.state_dim = 0
         self.action_dim = 0
 
         self.states, self.actions = None, None
         self._load_dataset(data_folder, env, split, data_size, normalize)
-
-        self.device = device
 
     def _to_tensor(self, data: np.ndarray) -> torch.Tensor:
         return torch.tensor(data, dtype=torch.float32, device=self.device)
