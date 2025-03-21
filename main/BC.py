@@ -367,7 +367,7 @@ class MujocoBuffer(Dataset):
         # Convert to numpy to save
         min_eigval = eig_vals[0].cpu().numpy()
         max_eigval = eig_vals[-1].cpu().numpy()
-        Y_mean = Y.mean.cpu().numpy()
+        Y_mean = Y_mean.cpu().numpy()
         Sigma_sqrt = Sigma_sqrt.cpu().numpy()
         Sigma = Sigma.cpu().numpy()
 
