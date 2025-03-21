@@ -86,8 +86,7 @@ def main():
     """replace values"""
     config = TrainConfig(**settings[setting])
     config.device = DEVICE
-    config.batch_size = 256
-    config.max_epochs = int(1e4)
+    config.batch_size = 2048
 
     config.data_folder = './dataset'
     config.project_folder = './'

@@ -67,6 +67,7 @@ def save_model(save_name, model, config):
         "config": asdict(config),
     }
     torch.save(checkpoint, save_path)
+    model.to(config.device)
 
 
 def cosine_similarity_gpu(a, b):
@@ -363,8 +364,12 @@ class MujocoBuffer(Dataset):
         sqrt_eig_vals = torch.sqrt(eig_vals)
         Sigma_sqrt = eig_vecs @ torch.diag(sqrt_eig_vals) @ torch.linalg.inv(eig_vecs)
 
-        min_eigval = eig_vals[0]
-        max_eigval = eig_vals[-1]
+        # Convert to numpy to save
+        min_eigval = eig_vals[0].cpu().numpy()
+        max_eigval = eig_vals[-1].cpu().numpy()
+        Y_mean = Y.mean.cpu().numpy()
+        Sigma_sqrt = Sigma_sqrt.cpu().numpy()
+        Sigma = Sigma.cpu().numpy()
 
         # Y = self.actions.T
         # y_dim = Y.shape[0]
