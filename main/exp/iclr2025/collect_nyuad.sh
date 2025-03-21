@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --verbose
-#SBATCH --time=48:00:00
+#SBATCH --time=24:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=nvidia
 #SBATCH --mem=16GB
@@ -19,7 +19,7 @@ cd $SCRATCH/NC_regression
 export PYTHONPATH=$PYTHONPATH:/scratch/zd662/NC_regression
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/zd662/.mujoco/mujoco210/bin:/usr/lib/nvidia
 
-# Launch 9 parallel jobs in background
+# Launch parallel jobs in background
 for i in {0..8}
 do
   echo "Launching job $i"
@@ -29,4 +29,4 @@ done
 # Wait for all background jobs to complete
 wait
 
-echo "All 9 jobs completed."
+echo "All jobs completed."

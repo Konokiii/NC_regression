@@ -25,39 +25,7 @@ def main():
          'lamW': 1.5e-3,
          'eval_freq': int(1e3)
          },
-        {'env': 'reacher',
-         'max_epochs': int(2e5),
-         'data_size': int(2e4),
-         'lamW': 1.5e-3,
-         'eval_freq': int(1e3)
-         },
-        {'env': 'reacher',
-         'max_epochs': int(2e5),
-         'data_size': int(5e4),
-         'lamW': 1.5e-3,
-         'eval_freq': int(1e3)
-         },
-
         {'env': 'swimmer',
-         'max_epochs': int(2e5),
-         'data_size': int(1e4),
-         'lamW': 1e-2,
-         'eval_freq': int(1e3)
-         },
-        {'env': 'swimmer',
-         'max_epochs': int(2e5),
-         'data_size': int(2e4),
-         'lamW': 1e-2,
-         'eval_freq': int(1e3)
-         },
-        {'env': 'swimmer',
-         'max_epochs': int(2e5),
-         'data_size': int(5e4),
-         'lamW': 1e-2,
-         'eval_freq': int(1e3)
-         },
-
-        {'env': 'hopper',
          'max_epochs': int(2e5),
          'data_size': int(1e4),
          'lamW': 1e-2,
@@ -65,7 +33,39 @@ def main():
          },
         {'env': 'hopper',
          'max_epochs': int(2e5),
+         'data_size': int(1e4),
+         'lamW': 1e-2,
+         'eval_freq': int(1e3)
+         },
+
+        {'env': 'reacher',
+         'max_epochs': int(2e5),
          'data_size': int(2e4),
+         'lamW': 1.5e-3,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'swimmer',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 1e-2,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'hopper',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 1e-2,
+         'eval_freq': int(1e3)
+         },
+
+        {'env': 'reacher',
+         'max_epochs': int(2e5),
+         'data_size': int(5e4),
+         'lamW': 1.5e-3,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'swimmer',
+         'max_epochs': int(2e5),
+         'data_size': int(5e4),
          'lamW': 1e-2,
          'eval_freq': int(1e3)
          },
@@ -86,12 +86,12 @@ def main():
     """replace values"""
     config = TrainConfig(**settings[setting])
     config.device = DEVICE
-    config.batch_size = 2048
+    config.batch_size = 4096
 
     config.data_folder = './dataset'
     config.project_folder = './'
     config.project = 'NC_new'
-    config.group = 'test'
+    config.group = 'data_collection'
 
     hyper2logname = {'env': 'E',
                      'max_epochs': 'MaxEp',
