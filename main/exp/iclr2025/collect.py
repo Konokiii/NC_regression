@@ -20,61 +20,85 @@ def main():
 
     settings = [
         {'env': 'reacher',
-         'max_epochs': int(2e5),
+         'max_epochs': int(3e5),
          'data_size': int(1e4),
          'lamW': 1.5e-3,
+         'eval_freq': int(1.5e3)
+         },
+        {'env': 'reacher',
+         'max_epochs': int(3e5),
+         'data_size': int(2e4),
+         'lamW': 1.5e-3,
+         'eval_freq': int(1.5e3)
+         },
+        {'env': 'reacher',
+         'max_epochs': int(3e5),
+         'data_size': int(2e4),
+         'lamW': 1.2e-3,
+         'eval_freq': int(1.5e3)
+         },
+        {'env': 'reacher',
+         'max_epochs': int(3e5),
+         'data_size': int(2e4),
+         'lamW': 1e-3,
+         'eval_freq': int(1.5e3)
+         },
+        {'env': 'reacher',
+         'max_epochs': int(3e5),
+         'data_size': int(2e4),
+         'lamW': 9e-4,
+         'eval_freq': int(1.5e3)
+         },
+
+        {'env': 'swimmer',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 3e-2,
          'eval_freq': int(1e3)
          },
         {'env': 'swimmer',
          'max_epochs': int(2e5),
-         'data_size': int(1e4),
-         'lamW': 1e-2,
+         'data_size': int(2e4),
+         'lamW': 5e-2,
          'eval_freq': int(1e3)
          },
-        {'env': 'hopper',
+        {'env': 'swimmer',
          'max_epochs': int(2e5),
-         'data_size': int(1e4),
-         'lamW': 1e-2,
+         'data_size': int(2e4),
+         'lamW': 7e-2,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'swimmer',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 9e-2,
+         'eval_freq': int(1e3)
+         },
+        {'env': 'swimmer',
+         'max_epochs': int(2e5),
+         'data_size': int(2e4),
+         'lamW': 1e-1,
          'eval_freq': int(1e3)
          },
 
-        {'env': 'reacher',
-         'max_epochs': int(2e5),
-         'data_size': int(2e4),
-         'lamW': 1.5e-3,
-         'eval_freq': int(1e3)
-         },
-        {'env': 'swimmer',
-         'max_epochs': int(2e5),
-         'data_size': int(2e4),
-         'lamW': 1e-2,
-         'eval_freq': int(1e3)
-         },
-        {'env': 'hopper',
-         'max_epochs': int(2e5),
-         'data_size': int(2e4),
-         'lamW': 1e-2,
-         'eval_freq': int(1e3)
-         },
-
-        {'env': 'reacher',
-         'max_epochs': int(2e5),
-         'data_size': int(5e4),
-         'lamW': 1.5e-3,
-         'eval_freq': int(1e3)
-         },
-        {'env': 'swimmer',
-         'max_epochs': int(2e5),
-         'data_size': int(5e4),
-         'lamW': 1e-2,
-         'eval_freq': int(1e3)
-         },
-        {'env': 'hopper',
-         'max_epochs': int(2e5),
-         'data_size': int(5e4),
-         'lamW': 1e-2,
-         'eval_freq': int(1e3)
-         },
+        # {'env': 'hopper',
+        #  'max_epochs': int(2e5),
+        #  'data_size': int(1e4),
+        #  'lamW': 1e-2,
+        #  'eval_freq': int(1e3)
+        #  },
+        # {'env': 'hopper',
+        #  'max_epochs': int(2e5),
+        #  'data_size': int(2e4),
+        #  'lamW': 1e-2,
+        #  'eval_freq': int(1e3)
+        #  },
+        # {'env': 'hopper',
+        #  'max_epochs': int(2e5),
+        #  'data_size': int(5e4),
+        #  'lamW': 1e-2,
+        #  'eval_freq': int(1e3)
+        #  },
     ]
 
     # indexes, actual_setting, total, hyper2logname = get_setting_dt(settings, setting)
