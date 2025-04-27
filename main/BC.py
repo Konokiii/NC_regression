@@ -98,11 +98,12 @@ def gram_schmidt(W):
 def compute_NRC1(features, target_dim, result_dict):
     H = features
     H_normalized = H / (torch.norm(H, dim=1, keepdim=True) + 1e-8)
-    n_components = max(target_dim, 5)
+    n_components = max(target_dim, 10)
 
     # Center the data
     H_mean = H.mean(dim=0, keepdim=True)
     H_centered = H - H_mean
+    H_normalized_centered = H_centered / (torch.norm(H_centered, dim=1, keepdim=True) + 1e-8)
 
     U, S, Vh = torch.linalg.svd(H_centered, full_matrices=False)
 
@@ -117,14 +118,19 @@ def compute_NRC1(features, target_dim, result_dict):
     for k in range(n_components):
         result_dict[f'EVR{k + 1}'] = explained_variance_ratio[k].item()
         H_P = torch.mm(H_U[:k + 1, :].T, H_U[:k + 1, :])
+
         H_proj_PCA = torch.mm(H, H_P)
         result_dict[f'NRC1_pca{k + 1}'] = torch.norm(H_proj_PCA - H).item() ** 2 / H.shape[0]
 
         H_proj_PCA_normalized = torch.mm(H_normalized, H_P)
         result_dict[f'NRC1n_pca{k + 1}'] = torch.norm(H_proj_PCA_normalized - H_normalized).item() ** 2 / H.shape[0]
 
+        H_proj_PCA_normalized_centered = torch.mm(H_normalized_centered, H_P)
+        result_dict[f'NRC1nc_pca{k + 1}'] = torch.norm(H_proj_PCA_normalized_centered - H_normalized_centered).item() ** 2 / H.shape[0]
+
     result_dict['NRC1'] = result_dict[f'NRC1_pca{target_dim}']
     result_dict['NRC1n'] = result_dict[f'NRC1n_pca{target_dim}']
+    result_dict['NRC1nc'] = result_dict[f'NRC1nc_pca{target_dim}']
 
 
 def compute_metrics(metrics, split, device, info=None):
@@ -169,6 +175,11 @@ def compute_metrics(metrics, split, device, info=None):
         result['cosSIM_W12'] = F.cosine_similarity(W[0], W[1], dim=0).item()
         result['cosSIM_W13'] = F.cosine_similarity(W[0], W[2], dim=0).item()
         result['cosSIM_W23'] = F.cosine_similarity(W[1], W[2], dim=0).item()
+    elif y_dim > 3:
+        W_normalized = W / (torch.norm(W, dim=1, keepdim=True) + 1e-8)
+        WWT_normalized = W_normalized @ W_normalized.T
+        result['cosSIM_avg'] = (WWT_normalized.sum() - WWT_normalized.trace()) / (y_dim**2-y_dim)
+
     result['WWT_norm'] = torch.norm(WWT).item()
 
     # NRC1 & explained variance ratio
@@ -422,6 +433,11 @@ class MujocoBuffer(Dataset):
                 'm1': Y_mean[0, 0],
                 'm2': Y_mean[1, 0],
                 'm3': Y_mean[2, 0]
+            }, Sigma, Sigma_sqrt
+        elif y_dim > 3:
+            return {
+                'min_eigval': min_eigval,
+                'max_eigval': max_eigval,
             }, Sigma, Sigma_sqrt
 
     def __len__(self):

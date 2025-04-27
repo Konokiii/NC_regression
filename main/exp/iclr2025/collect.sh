@@ -2,13 +2,13 @@
 #SBATCH --verbose
 #SBATCH --time=36:00:00
 #SBATCH --nodes=1
-#SBATCH --mem=16GB
+#SBATCH --mem=32GB
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=zd662@nyu.edu
 #SBATCH --output=../logs/%j.out
 #SBATCH --error=../logs/%j.err
-#SBATCH --gres=gpu:rtx2080:1
-#SBATCH --cpus-per-task=20
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=12
 
 echo "SLURM_JOBID: $SLURM_JOBID"
 
@@ -19,7 +19,7 @@ export PYTHONPATH=$PYTHONPATH:/scratch/zd662/NC_regression
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/zd662/.mujoco/mujoco210/bin:/usr/lib/nvidia
 
 # Launch parallel jobs in background
-for i in {0..9}
+for i in {0..11}
 do
   echo "Launching job $i"
   python main/exp/iclr2025/collect.py --setting $i > main/exp/logs/${SLURM_JOBID}_${i}.out 2> main/exp/logs/${SLURM_JOBID}_${i}.err &
