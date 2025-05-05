@@ -35,7 +35,7 @@ class TrainConfig:
     data_size: int = 1000  # Number of samples to use
     normalize: str = 'none'  # Choose from 'none', 'normal', 'standard', 'center'
 
-    arch: str = '256-R-256-R-256-R|T'  # Actor architecture
+    arch: str = '3-256-R'  # Actor architecture
     optimizer: str = 'sgd'
     lamH: float = -1  # If it is -1, then the model is not UFM.
     lamW: float = 5e-2
@@ -456,12 +456,16 @@ class MujocoBuffer(Dataset):
 
 
 class Actor(nn.Module):
-    def __init__(self, state_dim: int, action_dim: int, max_action: float = 1.0, arch: str = '256-R-256-R|T'):
+    def __init__(self, state_dim: int, action_dim: int, max_action: float = 1.0, arch: str = '3-256-R'):
         super(Actor, self).__init__()
 
-        arch, use_bias = arch.split('|')
-        arch = arch.split('-')
-        use_bias = True if use_bias == 'T' else False
+        depth, width, activation = arch.split('-')
+        arch = []
+        for _ in range(int(depth)):
+            arch.append(width)
+            arch.append(activation)
+
+        use_bias = True
 
         in_dim = state_dim
         module_list = []
