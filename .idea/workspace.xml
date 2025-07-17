@@ -5,101 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6dc0f2a-e5ca-49c2-b822-42d4bd36ab9b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/exps/bc/collect.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exps/vd4rl_bc/vd4rl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/figures/action_distribution/maze2d_large.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/figures/action_distribution/maze2d_medium.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/figures/action_distribution/maze2d_open.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/figures/action_distribution/maze2d_umaze.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/figures/action_distribution/reacher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/figures/action_distribution/swimmer.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_maze_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_mujoco_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/interactive_computing.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/BC.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/BC.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/DT.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/DT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/case1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/case1.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/gamma.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/gamma.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/gamma_gpu.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/hopper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/hopper.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/more_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/more_data.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/new_nrc3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/new_nrc3.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/reacher.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/reacher.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/swimmer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1/swimmer.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1_new/hopper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1_new/hopper.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1_new/reacher.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1_new/reacher.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1_new/swimmer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case1_new/swimmer.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case2/case2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case2/case2.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case2/hopper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case2/hopper.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case2/reacher.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/case2/reacher.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/adroit.py" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/adroit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/adroit.sh" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/adroit.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/hopper.py" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/hopper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/hopper.sh" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/hopper.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/patch.py" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/patch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/patch.sh" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/patch.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/dt/test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/exps/dt/test.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/case1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/case1.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/case2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/case2.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/collect.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/collect.sh" beforeDir="false" afterPath="$PROJECT_DIR$/exps/vd4rl_bc/vd4rl_nyuad.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/collect_nyuad.sh" beforeDir="false" afterPath="$PROJECT_DIR$/exps/bc/collect_nyuad.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/hopper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/hopper.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/reacher.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/reacher.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/swimmer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/iclr2025/swimmer.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/initiative/NC2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/initiative/NC2.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/initiative/abl_arch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/initiative/abl_arch.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/initiative/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/initiative/test.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/hopper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/hopper.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/long.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/long.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/long_nyuad.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/long_nyuad.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/patch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/patch.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/reacher.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/reacher.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/swimmer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/exp/rebuttal/swimmer.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/nrc_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/nrc_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maze2d_action_cov.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mujoco_action_cov.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/load_data_from_wandb.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/log_alias.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/plot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/plot_case2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/plot_learning_curves.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/preprocess_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/progressive_gamma.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/quick_plot_helper.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/rebuttal_plot.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agent/vd4rl_bc.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/vd4rl_bc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agent/vd4rl_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/vd4rl_buffer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,7 +169,7 @@
       <workItem from="1749873436336" duration="6112000" />
       <workItem from="1750083434185" duration="8800000" />
       <workItem from="1751212119670" duration="82000" />
-      <workItem from="1751214528310" duration="94523000" />
+      <workItem from="1751214528310" duration="102665000" />
     </task>
     <servers />
   </component>

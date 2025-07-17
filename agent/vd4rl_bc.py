@@ -33,7 +33,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 class TrainConfig:
     # Experiment
     device: str = "cuda"
-    env: str = "walker_walk"
+    env: str = "cheetah_run"
     dataset: str = "expert"
     data_size: Union[str, int] = "all"
     seed: int = 0  # Sets Gym, PyTorch and Numpy seeds
@@ -282,15 +282,15 @@ class BCAgent:
     def update(self, batch):
         self._train(True)
         metrics = dict()
-        obs, action, reward, _, _ = batch
+        obs, action, _, _, _ = batch
 
         # augment & encode
         obs = self.aug(obs)
         obs = self.encoder(obs)
+        action = torch.arctanh(action.clamp(-1.0 + 1e-7, 1.0 - 1e-7))
 
         # update actor
-        action_prediction = self.actor(obs)
-        actor_loss = F.mse_loss(action_prediction, action)
+        actor_loss = F.mse_loss(self.actor(obs), action)
 
         self.encoder_opt.zero_grad(set_to_none=True)
         self.actor_opt.zero_grad(set_to_none=True)
@@ -322,7 +322,7 @@ def run_vd4rl_bc(config: TrainConfig):
         # sarsa=True
     )
 
-    data_path = f"{config.vd4rl_path}/datasets/{config.env}/{config.dataset}/84px"
+    data_path = f"{config.vd4rl_path}/dataset/{config.env}/{config.dataset}/84px"
     print("Trying to load data from:", data_path)
     load_offline_dataset_into_buffer(
         Path(data_path),

@@ -1,6 +1,7 @@
 import abc
 from collections import deque
 import h5py
+import pickle
 
 import numpy as np
 from typing import Dict, Tuple
@@ -158,12 +159,14 @@ class EfficientReplayBuffer(AbstractReplayBuffer):
 
 
 def load_offline_dataset_into_buffer(offline_dir, replay_buffer, frame_stack, replay_buffer_size):
-    filenames = sorted(offline_dir.glob('*_train.hdf5'))
+    filenames = sorted(offline_dir.glob('*_train.pkl'))
     num_steps = 0
     for filename in filenames:
         try:
-            episodes = h5py.File(filename, 'r')
-            episodes = {k: episodes[k][:] for k in episodes.keys()}
+            with open(filename, 'rb') as f:
+                episodes = pickle.load(f)
+            # episodes = h5py.File(filename, 'r')
+            # episodes = {k: episodes[k][:] for k in episodes.keys()}
             add_offline_data_to_buffer(episodes, replay_buffer, framestack=frame_stack)
             length = episodes['reward'].shape[0]
             num_steps += length
