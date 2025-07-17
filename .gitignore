@@ -1,3 +1,5 @@
 /dataset/
-/results/
-
+/archive/
+/models/
+/metrics/
+/plots/
