@@ -6,7 +6,7 @@ import pickle
 import numpy as np
 from typing import Dict, Tuple
 
-from vd4rl_utils import ExtendedTimeStep, step_type_lookup
+from agent.vd4rl_utils import ExtendedTimeStep, step_type_lookup
 
 
 def get_timestep_from_idx(offline_data: dict, idx: int):

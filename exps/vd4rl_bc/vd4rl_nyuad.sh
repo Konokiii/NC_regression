@@ -4,13 +4,13 @@
 #SBATCH --nodes=1
 #SBATCH --partition=nvidia
 #SBATCH --mem=32GB
-#SBATCH --array=0-6
+#SBATCH --array=0-9
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=zd662@nyu.edu
 #SBATCH --output=../logs/%A_%a.out # %A is SLURM_ARRAY_JOB_ID, %a is SLURM_ARRAY_TASK_ID,
 #SBATCH --error=../logs/%A_%a.err # MAKE SURE WHEN YOU RUN THIS, ../logs IS A VALID PATH
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=8
 
 #echo "SLURM_JOBID: $SLURM_JOBID"
 
@@ -26,9 +26,9 @@ export PYTHONPATH=$PYTHONPATH:/scratch/zd662/NC_regression
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/zd662/.mujoco/mujoco210/bin:/usr/lib/nvidia
 
 # Launch parallel jobs in background
-for i in {0..3}
+for i in {0..1}
 do
-  index=$(( 4 * SLURM_ARRAY_TASK_ID + i ))
+  index=$(( 2 * SLURM_ARRAY_TASK_ID + i ))
   individual_log="${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}_${index}"
 
   echo "Launching job $index"

@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c6dc0f2a-e5ca-49c2-b822-42d4bd36ab9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/intrinsic_dimension/vd4rl_evaluation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/agent/vd4rl_bc.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/vd4rl_bc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/agent/vd4rl_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/agent/vd4rl_buffer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exps/vd4rl_bc/vd4rl.py" beforeDir="false" afterPath="$PROJECT_DIR$/exps/vd4rl_bc/vd4rl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exps/vd4rl_bc/vd4rl_nyuad.sh" beforeDir="false" afterPath="$PROJECT_DIR$/exps/vd4rl_bc/vd4rl_nyuad.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +171,7 @@
       <workItem from="1749873436336" duration="6112000" />
       <workItem from="1750083434185" duration="8800000" />
       <workItem from="1751212119670" duration="82000" />
-      <workItem from="1751214528310" duration="102665000" />
+      <workItem from="1751214528310" duration="111273000" />
     </task>
     <servers />
   </component>

@@ -26,7 +26,7 @@ def main():
         'actor_wd', '', [0, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 5e-2, 1e-1],
         'hidden_layers', '', [3],
         'hidden_dim', '', [256],
-        'optimizer', '', ['adam'],
+        'optimizer', '', ['adam', 'sgd'],
         'eval_freq', '', [int(5e4)]
     ]
 

@@ -21,8 +21,8 @@ import numpy as np
 from tqdm.auto import trange
 import wandb
 
-from vd4rl_buffer import EfficientReplayBuffer, load_offline_dataset_into_buffer
-from vd4rl_utils import make
+from agent.vd4rl_buffer import EfficientReplayBuffer, load_offline_dataset_into_buffer
+from agent.vd4rl_utils import make
 
 TensorBatch = List[torch.Tensor]
 
@@ -100,7 +100,7 @@ def wandb_init(config: dict) -> None:
         name=config["name"],
         id=str(uuid.uuid4()),
     )
-    wandb.run.save()
+    # wandb.run.save()
 
 
 @torch.no_grad()
