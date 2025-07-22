@@ -3,11 +3,11 @@
 #SBATCH --time=03:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=nvidia
-#SBATCH --mem=32GB
+#SBATCH --mem=100GB
 #SBATCH --mail-type=ALL # select which email types will be sent
 #SBATCH --mail-user=zd662@nyu.edu # NOTE: put your netid here if you want emails
 
-#SBATCH --array=0-12 # here the number depends on number of tasks in the array, e.g. 0-11 will create 12 tasks
+#SBATCH --array=0-1 # here the number depends on number of tasks in the array, e.g. 0-11 will create 12 tasks
 #SBATCH --output=./logs/%A_%a.out # %A is SLURM_ARRAY_JOB_ID, %a is SLURM_ARRAY_TASK_ID,
 #SBATCH --error=./logs/%A_%a.err # MAKE SURE WHEN YOU RUN THIS, ../train_logs IS A VALID PATH
 
@@ -31,22 +31,13 @@ cd $SCRATCH/NC_regression
 export PYTHONPATH=$PYTHONPATH:/scratch/zd662/NC_regression
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/zd662/.mujoco/mujoco210/bin:/usr/lib/nvidia
 
+
 for k in {0..4}
 do
-  setting1=$((10 * SLURM_ARRAY_TASK_ID + 2 * k))
-  setting2=$((10 * SLURM_ARRAY_TASK_ID + 2 * k + 1))
+  setting=$((5 * SLURM_ARRAY_TASK_ID + k))
 
-  python intrinsic_dimension/vd4rl_evaluation.py --setting $setting1 \
+  python intrinsic_dimension/vd4rl_evaluation.py --setting $setting \
   > intrinsic_dimension/logs/${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}_${setting1}.out \
-  2> intrinsic_dimension/logs/${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}_${setting1}.err &
-
-  python intrinsic_dimension/vd4rl_evaluation.py --setting $setting2 \
-  > intrinsic_dimension/logs/${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}_${setting2}.out \
-  2> intrinsic_dimension/logs/${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}_${setting2}.err &
-
-  wait
+  2> intrinsic_dimension/logs/${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}_${setting1}.err
 
 done
-
-#export PYTHONPATH=$PYTHONPATH:/NC_regression
-#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/zd662/.mujoco/mujoco210/bin:/usr/lib/nvidia

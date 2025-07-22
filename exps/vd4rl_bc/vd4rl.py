@@ -21,13 +21,13 @@ def main():
     settings = [
         'env', '', ['cheetah_run'],
         'dataset', '', ['expert'],
-        'max_timesteps', '', [int(1e6)],
-        'data_size', '', ['all'],
+        'max_timesteps', '', [int(2e5)],
+        'data_size', '', [20000],
         'actor_wd', '', [0, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 5e-2, 1e-1],
         'hidden_layers', '', [3],
         'hidden_dim', '', [256],
         'optimizer', '', ['adam', 'sgd'],
-        'eval_freq', '', [int(5e4)]
+        'eval_freq', '', [int(1e4)]
     ]
 
     indexes, actual_setting, total, _ = get_setting_dt(settings, setting)

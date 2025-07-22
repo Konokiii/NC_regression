@@ -158,13 +158,15 @@ class EfficientReplayBuffer(AbstractReplayBuffer):
         return obs, act
 
 
-def load_offline_dataset_into_buffer(offline_dir, replay_buffer, frame_stack, replay_buffer_size):
+def load_offline_dataset_into_buffer(offline_dir, replay_buffer, frame_stack, replay_buffer_size, data_size):
     filenames = sorted(offline_dir.glob('*_train.pkl'))
     num_steps = 0
     for filename in filenames:
         try:
             with open(filename, 'rb') as f:
                 episodes = pickle.load(f)
+                if data_size != 'all':
+                    episodes = {k: v[:data_size] for k, v in episodes.items()}
             # episodes = h5py.File(filename, 'r')
             # episodes = {k: episodes[k][:] for k in episodes.keys()}
             add_offline_data_to_buffer(episodes, replay_buffer, framestack=frame_stack)

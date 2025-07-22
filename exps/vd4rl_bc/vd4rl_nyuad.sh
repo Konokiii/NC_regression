@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --verbose
-#SBATCH --time=30:00:00
+#SBATCH --time=20:00:00
 #SBATCH --nodes=1
 #SBATCH --partition=nvidia
 #SBATCH --mem=32GB

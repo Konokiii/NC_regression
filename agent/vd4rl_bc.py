@@ -329,6 +329,7 @@ def run_vd4rl_bc(config: TrainConfig):
         replay_buffer,
         3,
         config.buffer_size,
+        config.data_size
     )
 
     max_action = 1.0

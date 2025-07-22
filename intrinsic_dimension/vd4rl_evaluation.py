@@ -3,6 +3,8 @@ import gym
 import os
 import numpy as np
 
+os.environ['MUJOCO_GL'] = 'egl'
+
 import random
 from typing import Optional
 import pickle
@@ -159,6 +161,20 @@ def extract_features(model, data, policy_layer_name='policy'):
     return features[0] if features else None
 
 
+def encode_states(state_array, encoder, batch_size=512, device='cpu'):
+    features = []
+    with torch.no_grad():
+        for i in range(0, len(state_array), batch_size):
+            batch_np = state_array[i:i + batch_size]
+            batch_tensor = torch.from_numpy(batch_np).float().to(device)
+
+            batch_encoded = encoder(batch_tensor)
+            features.append(batch_encoded)
+
+            del batch_tensor, batch_encoded  # free GPU memory
+
+    return torch.cat(features, dim=0)
+
 
 if __name__ == '__main__':
     CUDA_AVAILABLE = torch.cuda.is_available()
@@ -180,7 +196,7 @@ if __name__ == '__main__':
         'actor_wd', '', [0, 1e-5, 5e-5, 1e-4, 5e-4, 1e-3, 5e-3, 1e-2, 5e-2, 1e-1],
         'hidden_layers', '', [3],
         'hidden_dim', '', [256],
-        'optimizer', '', ['adam', 'sgd'],
+        'optimizer', '', ['adam'],
         'eval_freq', '', [int(5e4)],
 
         'seed', '', [0],
@@ -196,14 +212,13 @@ if __name__ == '__main__':
                      'optimizer': 'Opt'}
 
     indexes, config, total, _ = get_setting_dt(settings, setting)
-    config['name'] = '_'.join([v + str(getattr(config, k)) for k, v in hyper2logname.items()])
+    config['name'] = '_'.join([v + str(config[k]) for k, v in hyper2logname.items()])
     config['project'] = 'Intrinsic_Dim'
     config['device'] = DEVICE
 
     env = make(config['env'], 3, 2, config['seed'])
-    state_dim = env.observation_space.shape[0]
-    action_dim = env.action_space.shape[0]
-    set_seed(config['seed'], env)
+    action_dim = env.action_spec().shape[0]
+    set_seed(config['seed'])
 
     MODEL_FOLDER = f"./vd4rl/models/{config['env']}/{config['name']}"
     TRAIN_DATA_PATH = f"./vd4rl/dataset/{config['env']}/expert/84px/{config['env']}_expert_train.pkl"
@@ -232,7 +247,10 @@ if __name__ == '__main__':
     add_offline_data_to_buffer(train_dataset, replay_buffer_train, framestack=3)
 
     print('Computing train target ID...')
-    train_target_ID = compute_intrinsic_dimension(to_torch(next(replay_buffer_train), DEVICE)[1], batch_size=1000, epsilon=0.)
+    X_train, Y_train, _, _, _ = next(replay_buffer_train)
+    Y_train = torch.FloatTensor(Y_train).to(DEVICE)
+    train_target_ID = compute_intrinsic_dimension(Y_train, batch_size=1000, epsilon=1e-7)
+    print(train_target_ID)
     print('Finished computing train target ID!')
 
     with open(TEST_DATA_PATH, 'rb') as f:
@@ -253,7 +271,9 @@ if __name__ == '__main__':
     add_offline_data_to_buffer(test_dataset, replay_buffer_test, framestack=3)
 
     print('Computing tset target ID...')
-    test_target_ID = compute_intrinsic_dimension(to_torch(next(replay_buffer_test), DEVICE)[1], batch_size=1000, epsilon=0.)
+    X_test, Y_test, _, _, _ = next(replay_buffer_test)
+    Y_test = torch.FloatTensor(Y_test).to(DEVICE)
+    test_target_ID = compute_intrinsic_dimension(Y_test, batch_size=1000, epsilon=1e-7)
     print('Finished computing test target ID!')
 
     wandb_init(config)
@@ -277,19 +297,23 @@ if __name__ == '__main__':
 
             # ID evaluation
             with torch.no_grad():
-                X_train, Y_train = list(to_torch(next(replay_buffer_train), DEVICE))
-                X_train = encoder(X_train)
-                X_test, Y_test = list(to_torch(next(replay_buffer_test), DEVICE))
-                X_test = encoder(X_test)
 
-                H_train = extract_features(actor, X_train, policy_layer_name='policy')
-                train_feature_ID = compute_intrinsic_dimension(H_train, batch_size=1000, epsilon=1e-6)
+                # X_train, Y_train, _, _, _ = next(replay_buffer_train)
+                X_train_emb = encode_states(X_train, encoder, batch_size=512, device=DEVICE)
+                # Y_train = torch.FloatTensor(Y_train).to(device)
+
+                # X_test, Y_test, _, _, _ = next(replay_buffer_test)
+                X_test_emb = encode_states(X_test, encoder, batch_size=512, device=DEVICE)
+                # Y_test = torch.FloatTensor(Y_test).to(device)
+
+                H_train = extract_features(actor, X_train_emb, policy_layer_name='policy')
+                train_feature_ID = compute_intrinsic_dimension(H_train, batch_size=1000, epsilon=1e-7)
                 NRC1_related = compute_NRC1(H_train, target_dim=action_dim)
                 Y_train_hat = actor.W(H_train)
                 train_mse = torch.sum((Y_train - Y_train_hat) ** 2).item() / Y_train.shape[0]
 
-                H_test = extract_features(actor, X_test, policy_layer_name='policy')
-                test_feature_ID = compute_intrinsic_dimension(H_test, batch_size=1000, epsilon=1e-6)
+                H_test = extract_features(actor, X_test_emb, policy_layer_name='policy')
+                test_feature_ID = compute_intrinsic_dimension(H_test, batch_size=1000, epsilon=1e-7)
                 Y_test_hat = actor.W(H_test)
                 test_mse = torch.sum((Y_test - Y_test_hat) ** 2).item() / Y_test.shape[0]
 
